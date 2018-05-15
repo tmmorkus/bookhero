@@ -1,0 +1,5 @@
+parameters:
+    pdo:
+        connectionString: 'mysql:host=127.0.0.1;dbname=app;charset=utf8'
+        username: root
+        password:
