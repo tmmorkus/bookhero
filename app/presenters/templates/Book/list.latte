@@ -1,0 +1,51 @@
+{block content}
+
+ {form filterForm} 
+  <select name = "genres">
+    <option> </option>
+   {foreach $genres as $genre}
+    <option value= "{$genre->id}" > {$genre->name} </option>
+   {/foreach}
+  </select>
+  <input type = "submit">
+ {/form}
+
+  {if !empty($books)}
+    
+    
+  <table>
+  <thead>
+     <tr>
+      <th><a href="{link Book:list orderBy=>name, order=>$order, orderPrev=>$orderPrev}">Název</a></th>
+      <th><a href="{link Book:list orderBy=>author, order=>$order, orderPrev=>$orderPrev}">Autor</a></th>
+      <th><a href="{link Book:list orderBy=>year, order=>$order, orderPrev=>$orderPrev}">Rok vydání</a></th>
+      <th>ISBN</th>
+      <th> </th>
+    </tr>
+  </thead>
+   <tbody>
+    {foreach $books as $book}
+     <tr>
+      <td><a href="{link Book:show id=>$book->id}">{$book->name}</a></td>
+      <td>{$book->author}</td>
+      <td>{$book->year}</td>
+      <td>{$book->isbn}</td>
+     
+      <td> 
+        {form addBookToUserForm}
+          <input type="hidden" name="bookId" value="{$book->id}" >
+          <input type = "submit" value = "přidat do kolekce">
+        {/form}
+      </td>
+      
+     </tr>
+    {/foreach}
+    </tbody>  
+    </table>
+  {else}
+    <p>V seznamu nejsou žádné knihy</p>
+  {/if}
+<a href="{link User:login}">Přihlašte se...</a>
+
+<a href="{link User:register}">Přihlašte se...</a>
+<a href="{link User:logout}">Odhlásit se...</a>

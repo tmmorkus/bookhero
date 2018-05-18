@@ -15,7 +15,7 @@ session:
 	expiration: 14 days
 
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=test'
+	dsn: 'mysql:host=127.0.0.1;dbname=app'
 	user:
 	password:
 	options:
@@ -25,10 +25,10 @@ database:
 
 
 services:
-	- App\Model\UserManager
+	- App\Model\BooksModel 
+	- App\Model\GenresModel
+	- App\Model\UsersModel
 	- App\Forms\FormFactory
-	- App\Forms\SignInFormFactory
-	- App\Forms\SignUpFormFactory
 	router: App\RouterFactory::createRouter
 	pdo: \PDO(%pdo.connectionString%,%pdo.username%,%pdo.password%)
 
