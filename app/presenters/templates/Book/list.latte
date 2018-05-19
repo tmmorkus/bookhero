@@ -30,14 +30,14 @@
       <td>{$book->author}</td>
       <td>{$book->year}</td>
       <td>{$book->isbn}</td>
-     
+     {if $user->isLoggedIn()}
       <td> 
         {form addBookToUserForm}
           <input type="hidden" name="bookId" value="{$book->id}" >
           <input type = "submit" value = "přidat do kolekce">
         {/form}
       </td>
-      
+     {/if}
      </tr>
     {/foreach}
     </tbody>  
@@ -45,7 +45,4 @@
   {else}
     <p>V seznamu nejsou žádné knihy</p>
   {/if}
-<a href="{link User:login}">Přihlašte se...</a>
 
-<a href="{link User:register}">Přihlašte se...</a>
-<a href="{link User:logout}">Odhlásit se...</a>

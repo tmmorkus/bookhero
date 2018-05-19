@@ -1,9 +1,9 @@
 <?php
-// source: C:\xampp\htdocs\bookhero\app\presenters/templates/Book/userbooks.latte
+// source: C:\xampp\htdocs\bookhero\app\presenters/templates/Book/userBooks.latte
 
 use Latte\Runtime as LR;
 
-class Templatebecaa67390 extends Latte\Runtime\Template
+class Template4a9712f50c extends Latte\Runtime\Template
 {
 	public $blocks = [
 		'content' => 'blockContent',

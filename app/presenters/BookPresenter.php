@@ -8,6 +8,7 @@ use App\Model\Entities\Book;
 use App\Model\GenresModel;
 use Nette;
 use Nette\Application\UI\Form;
+use Nette\Utils\Image;
 
 /**
  * Base presenter for all application presenters.
@@ -44,8 +45,7 @@ class BookPresenter extends Nette\Application\UI\Presenter
         return $form;
     }
 
-    
-      public function createComponentDeleteBookFromUserForm()
+    public function createComponentDeleteBookFromUserForm()
     {
         $form = new Form;
 
@@ -53,17 +53,16 @@ class BookPresenter extends Nette\Application\UI\Presenter
         return $form;
     }
 
-   public function deleteBookFromUser ($form,$values)
-   {
-        $data = $form->getHttpData();
+    public function deleteBookFromUser($form, $values)
+    {
+        $data   = $form->getHttpData();
         $result = $this->booksModel->deleteBookFromUser($data["bookId"], $this->user->id);
         if ($result) {
             $this->flashMessage('Kniha odebrána z Vašeho seznamu');
         }
         $this->redirect('this');
 
-   }
-
+    }
 
     public function createComponentAddBookToUserForm()
     {
@@ -73,7 +72,6 @@ class BookPresenter extends Nette\Application\UI\Presenter
         return $form;
     }
 
-
     public function addBookToUserFormSucceeded($form, $values)
     {
         $data = $form->getHttpData();
@@ -81,9 +79,7 @@ class BookPresenter extends Nette\Application\UI\Presenter
         $result = $this->booksModel->addBookToUser($data["bookId"], $this->user->id);
         if ($result) {
             $this->flashMessage('Kniha přidána do Vašeho seznamu');
-        }
-        else
-        {
+        } else {
             $this->flashMessage('Kniha se již ve Vašem seznamu nachází');
         }
         $this->redirect('this');
@@ -96,6 +92,11 @@ class BookPresenter extends Nette\Application\UI\Presenter
             ->setRequired('Je nutné zadat název knihy');
         $form->addText('author', 'Autor:', 1, 200)
             ->setRequired('Je nutné zadat autora knihy');
+        $form->addUpload('image', 'Obrázek(160x100):')
+            ->setRequired('Je nutné vybrat obrázek')
+            ->addCondition(Form::IMAGE)
+            ->addRule(Form::MIME_TYPE, 'Soubor musí být obrázek typu JPEG nebo PNG', array('image/jpeg', 'image/png'))
+            ->addRule(Form::MAX_FILE_SIZE, 'Max file size is 514kb.', 514 * 1024);
         $form->addText('year', 'Rok vydání')
             ->setRequired('Je nutné zadat rok vydání knihy')
             ->addRule(Form::INTEGER, 'Rok musí být číslo')
@@ -119,8 +120,11 @@ class BookPresenter extends Nette\Application\UI\Presenter
         return $form;
     }
 
-    public function renderAdd()
+    public function handleRate($id, $rating)
     {
+        if ($this->user->isLoggedIn()) {  
+            $this->booksModel->rateBook($this->user->id, $id, $rating);
+        }
 
     }
 
@@ -132,6 +136,18 @@ class BookPresenter extends Nette\Application\UI\Presenter
     public function addBookSucceeded($form, $values)
     {
 
+        $image = $values->image->toImage();
+
+        $this->flashMessage('Článek se nepodařilo uložit.', 'error');
+
+        $image->resize(100, 160, Image::STRETCH);
+
+        $imgName = uniqid(rand(0, 20), true) . '.jpg';
+        $dir     = 'images/covers/';
+        $imgPath = $dir . $imgName;
+
+        $image->save($imgPath, 90, Image::JPEG);
+
         $book = new Book();
 
         $book->name        = $values->name;
@@ -141,6 +157,7 @@ class BookPresenter extends Nette\Application\UI\Presenter
         $book->pages       = $values->pages;
         $book->description = $values->description;
         $book->genre       = $values->genre;
+        $book->img         = $imgPath;
 
         $result = $this->booksModel->addBook($book);
         if ($result) {
@@ -159,8 +176,15 @@ class BookPresenter extends Nette\Application\UI\Presenter
 
     public function renderShow($id)
     {
-
-        $this->template->book = $this->booksModel->findBook($id);
+      
+        if ($this->user->isLoggedIn()) {
+           $userId = $this->user->id;
+        }
+        else
+        {
+           $userId = 0; 
+        }
+        $this->template->book   = $this->booksModel->findBook($id,$userId);
     }
 
     public function injectGenresModel(GenresModel $genresModel)

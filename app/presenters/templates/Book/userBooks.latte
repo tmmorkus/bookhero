@@ -1,8 +1,22 @@
 {block content}
+<div class="container"> 
+<div class = "row"> 
 {foreach $books as $book}
- <div><a href="{link Book:show id=>$book->id}"> {$book->name} </a></div>
-         {form deleteBookFromUserForm}
+ <div class = "col-sm-3 text-center">
+   <table>
+   	<tbody>
+   	 <tr><td><a href="{link Book:show id=>$book->id}"> {$book->name} </a></tr></td>
+   	 <tr><td><img src="{$basePath.'/'.$book->img}" alt="{$book->name} přebal" height="160" width="100"></tr></td>
+   	 <tr><td> {form deleteBookFromUserForm}
           <input type="hidden" name="bookId" value="{$book->id}" >
           <input type = "submit" value = "odebrat">
-        {/form}
+     {/form}
+     </tr></td>
+     </tbody>
+   </table>
+ </div>
 {/foreach}	
+</div>
+</div>
+
+

@@ -86,21 +86,25 @@ class Template9317c36948 extends Latte\Runtime\Template
       <td><?php echo LR\Filters::escapeHtmlText($book->author) /* line 30 */ ?></td>
       <td><?php echo LR\Filters::escapeHtmlText($book->year) /* line 31 */ ?></td>
       <td><?php echo LR\Filters::escapeHtmlText($book->isbn) /* line 32 */ ?></td>
-     
+<?php
+				if ($user->isLoggedIn()) {
+?>
       <td> 
         <?php
-				/* line 35 */
-				echo Nette\Bridges\FormsLatte\Runtime::renderFormBegin($form = $_form = $this->global->formsStack[] = $this->global->uiControl["addBookToUserForm"], []);
+					/* line 35 */
+					echo Nette\Bridges\FormsLatte\Runtime::renderFormBegin($form = $_form = $this->global->formsStack[] = $this->global->uiControl["addBookToUserForm"], []);
 ?>
 
           <input type="hidden" name="bookId" value="<?php echo LR\Filters::escapeHtmlAttr($book->id) /* line 36 */ ?>">
           <input type = "submit" value = "přidat do kolekce">
         <?php
-				echo Nette\Bridges\FormsLatte\Runtime::renderFormEnd(array_pop($this->global->formsStack));
+					echo Nette\Bridges\FormsLatte\Runtime::renderFormEnd(array_pop($this->global->formsStack));
 ?>
 
       </td>
-      
+<?php
+				}
+?>
      </tr>
 <?php
 				$iterations++;
@@ -115,10 +119,8 @@ class Template9317c36948 extends Latte\Runtime\Template
     <p>V seznamu nejsou žádné knihy</p>
 <?php
 		}
-		?><a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:login")) ?>">Přihlašte se...</a>
+?>
 
-<a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:register")) ?>">Přihlašte se...</a>
-<a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:logout")) ?>">Odhlásit se...</a>
 <?php
 	}
 

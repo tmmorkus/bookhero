@@ -1,31 +1,39 @@
 {block content}
-<a href="{link Book:list orderBy=>name, order=>asc}">Zpět</a>
-<h2>{$book->name}</h2>
-<div>
-	<img> </img>
+<div class = "container">
+	<a href="{link Book:list orderBy=>name, order=>asc}">Zpět</a>
+	<h2>{$book->name}</h2>
+	<div class = "row">
+
+		<div class = "col-lg-2 col-md-3 col-sm-4">
+			<img src="{$basePath.'/'.$book->img}" alt="{$book->name} přebal" height="160" width="100">
+		</div>
+		<div class = "col-lg-10 col-md-9 col-sm-8">
+		<table>
+			<tr>
+				<td class="font-weight-bold">Autor: </td>
+				<td>{$book->author}</td>
+			<tr>
+			<tr>
+				<td class="font-weight-bold">Stran: </td>
+				<td>{$book->pages}</td>
+			<tr>
+			<tr>
+				<td class="font-weight-bold">Žánr: </td>
+				<td>{$book->author}</td>
+			<tr>
+			<tr>
+				<td class="font-weight-bold">ISBN: </td>
+				<td>{$book->isbn}</td>
+			<tr>	
+		</table>
+	  </div>
+     <div class = "col-12">Pokud by se pro stejný účel použil smysluplný text, bylo by těžké hodnotit pouze vzhled, aniž by se pozorovatel nechal svést ke čtení obsahu. Pokud by byl naopak použit nesmyslný, ale pravidelný text (např. opakování „asdf asdf asdf…“), oko by při posuzování vzhledu bylo vyrušováno pravidelnou strukturou textu, která se od běžného textu liší. Text lorem ipsum na první pohled připomíná běžný text, slova jsou různě dlouhá, frekvence písmen je podobná běžné řeči, interpunkce vypadá přirozeně atd.</div>
+		
+	</div>
 </div>
-<div>
-<table>
-	<tr>
-		<td>Autor</td>
-		<td>{$book->author}</td>
-	<tr>
-	<tr>
-		<td>Stran</td>
-		<td>{$book->pages}</td>
-	<tr>
-	<tr>
-		<td>Žánr</td>
-		<td>{$book->author}</td>
-	<tr>
-	<tr>
-		<td>ISBN</td>
-		<td>{$book->isbn}</td>
-	<tr>	
-	<tr>
-		<td>Autor</td>
-		<td>{$book->author}</td>
-	<tr>
-</table>
-<div>{$book->description}</div>
-<div>
+
+
+{if $user->isLoggedIn()}
+  <a n:href="rate!, rating=>1"><i class="far fa-thumbs-up" style="color:{if $book->userRating == 1} green {else} blue {/if} ; font-size: 24px;"></i></a>
+  <a n:href="rate!, rating=>2" ><i class="far fa-thumbs-down" style="color:{if $book->userRating == 2} red {else} blue {/if}; font-size: 24px;"></i></a>
+{/if}

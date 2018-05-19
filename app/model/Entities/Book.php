@@ -12,7 +12,8 @@ namespace App\Model\Entities;
  * @property string $description
  * @property int $pages
  * @property string $isbn
- * @property string $category 
+ * @property string $category
+ * @property string $userRating 
  * @property string|null $img
 
  */
@@ -35,6 +36,7 @@ class Book{
       'isbn'=>@$this->isbn,
       'img'=>@$this->img,
       'genre'=>@$this->genre,
+      'rating' =>@$this->userRating,
     ];
     if (!empty($this->id)){
       $result['id']=$this->id;

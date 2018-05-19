@@ -23,17 +23,31 @@ class BooksModel
 
     }
 
-    public function findBook($id)
+    public function findBook($id,$userId)
     {
-        $query = $this->pdo->prepare('SELECT * FROM books where id =?');
-        $query->execute([$id]);
+        $param = [];
+        $param[]=$id;
+        if ($userId > 0) {
+            
+            $sql = 'select books.*, user_books.userRating as userRating from books left join 
+            user_books on books.id = user_books.bookId where books.id = ? and user_books.userId = ?';
+            $param[] = $userId;
+        }
+        else
+        {
+           $sql = 'SELECT * FROM books where id =?';
+           
+        }
+        
+
+        $query = $this->pdo->prepare($sql);
+        $query->execute($param);
         return $query->fetchObject(__NAMESPACE__ . '\Entities\Book');
     }
 
     public function findBooks($orderBy, $order, $filter)
     {
         $param = [];
-
         $sql = 'SELECT * FROM books ';
         if (!empty($filter)) {
             $sql .= 'WHERE genreId = ? ';
@@ -79,20 +93,28 @@ class BooksModel
     public function addBook(Book $book)
     {
 
-        $sql   = 'INSERT INTO books (name,author,year,isbn,pages,description, genreId) VALUES (?,?,?,?,?,?,?)';
+        $sql   = 'INSERT INTO books (name,author,year,isbn,pages,description, genreId, img) VALUES (?,?,?,?,?,?,?,?)';
         $query = $this->pdo->prepare($sql);
-        $result = $query->execute([$book->name,$book->author,$book->year,$book->isbn,$book->pages,$book->description,$book->genre]);
+        $result = $query->execute([$book->name,$book->author,$book->year,$book->isbn,$book->pages,$book->description,$book->genre, $book->img]);
 
         return $result;
 
     }
 
-    public function rateBook($rating, $userId)
+
+    public function findRating($userId, $bookId)
     {
-        $sql   = 'UPDATE user_books SET userRating = ? WHERE userId = ?';
+       $sql = 'select userRating from user_books where userId = ? and bookId = ?';
+       $query = $this->pdo->prepare($sql);
+       return $query->execute([$userId,$bookId]);
+    }
+
+    public function rateBook($userId,$bookId,$rating)
+    {
+
+        $sql   = 'UPDATE user_books SET userRating = ? WHERE userId = ? and bookId = ?';
         $query = $this->pdo->prepare($sql);
-        $query->execute([$rating, $userId]);
-    return $query->fetchAll(PDO::FETCH_CLASS, __NAMESPACE__ . '\Entities\Book');
+        $query->execute([$rating, $userId,$bookId]);
     }
     /**
      * ArticlesModel constructor
