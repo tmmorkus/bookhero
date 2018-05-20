@@ -14,6 +14,7 @@ namespace App\Model\Entities;
  * @property string $isbn
  * @property string $category
  * @property string $userRating 
+ * @property int $rating 
  * @property string|null $img
 
  */

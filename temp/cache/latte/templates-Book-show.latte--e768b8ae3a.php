@@ -62,6 +62,10 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 				<td class="font-weight-bold">ISBN: </td>
 				<td><?php echo LR\Filters::escapeHtmlText($book->isbn) /* line 26 */ ?></td>
 			<tr>	
+			<tr>
+				<td class="font-weight-bold">Hodnocení: </td>
+				<td><?php echo LR\Filters::escapeHtmlText($book->rating) /* line 30 */ ?>%</td>
+			<tr>	
 		</table>
 	  </div>
      <div class = "col-12">Pokud by se pro stejný účel použil smysluplný text, bylo by těžké hodnotit pouze vzhled, aniž by se pozorovatel nechal svést ke čtení obsahu. Pokud by byl naopak použit nesmyslný, ale pravidelný text (např. opakování „asdf asdf asdf…“), oko by při posuzování vzhledu bylo vyrušováno pravidelnou strukturou textu, která se od běžného textu liší. Text lorem ipsum na první pohled připomíná běžný text, slova jsou různě dlouhá, frekvence písmen je podobná běžné řeči, interpunkce vypadá přirozeně atd.</div>

@@ -45,21 +45,49 @@ class BooksModel
         return $query->fetchObject(__NAMESPACE__ . '\Entities\Book');
     }
 
-    public function findBooks($orderBy, $order, $filter)
+    public function findBooksCount($filter)
+    {
+        $sql = 'SELECT COUNT(*) FROM books ';
+        if (!empty($filter)) {
+          $sql .= 'where genreId = :genreId';
+        }
+        
+        $query = $this->pdo->prepare($sql);
+        if (!empty($filter)) {
+          $query->bindParam(':genreId',$filter,PDO::PARAM_INT);
+        }
+       $query->execute();
+       return $query->fetchColumn();
+
+    }
+
+    public function findBooks($orderBy, $order, $filter,$limit,$offset)
     {
         $param = [];
-        $sql = 'SELECT * FROM books ';
+        $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/COUNT(user_books.userRating)) 
+* 100)) as rating from books left join user_books on user_books.bookId = books.id ';
         if (!empty($filter)) {
-            $sql .= 'WHERE genreId = ? ';
-            $param[] = $filter;
+            $sql .= 'WHERE books.genreId = :genreId ';
         }
 
-        if (in_array($orderBy, ["name", "author", "year"]) && in_array($order, ["asc", "desc"])) {
-            $sql .= 'ORDER BY ' . $orderBy . " " . $order;
+        if (!(in_array($orderBy, ["name", "author", "year", "rating"]) && in_array($order, ["asc", "desc"]))) {
+           $orderBy = 'name';
+           $order =  'asc'; 
         }
 
+         $sql .= 'GROUP BY books.id '; 
+
+         $sql .= 'ORDER BY ' . $orderBy . " " . $order;
+
+         $sql .= ' LIMIT :limit OFFSET :offset';
+  
         $query = $this->pdo->prepare($sql);
-        $query->execute($param);
+        $query->bindParam(':offset',$offset,PDO::PARAM_INT);
+        $query->bindParam(':limit',$limit,PDO::PARAM_INT);
+        if (!empty($filter)) {
+          $query->bindParam(':genreId',$filter,PDO::PARAM_INT);
+        }
+        $query->execute();
         return $query->fetchAll(PDO::FETCH_CLASS, __NAMESPACE__ . '\Entities\Book');
 
     }

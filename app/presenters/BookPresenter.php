@@ -9,6 +9,7 @@ use App\Model\GenresModel;
 use Nette;
 use Nette\Application\UI\Form;
 use Nette\Utils\Image;
+use Nette\Utils\Paginator;
 
 /**
  * Base presenter for all application presenters.
@@ -19,21 +20,35 @@ class BookPresenter extends Nette\Application\UI\Presenter
     private $booksModel;
     private $genresModel;
 
-    public function renderList($orderBy, $order, $orderPrev, $filter)
+    public function renderList($orderBy, $order, $orderPrev, $filter,$page = 1)
     {
 
         if ($orderBy != $orderPrev) {
             $order = "asc";
         }
 
-        $this->template->books = $this->booksModel->findBooks($orderBy, $order, $filter);
+        $booksCount = $this->booksModel->findBooksCount($filter);
+
+        $paginator = new Paginator();
+        $paginator->setItemCount($booksCount);
+        $paginator->setItemsPerPage(2);
+        $paginator->setPage($page); 
+    
+
+        $this->template->books = $this->booksModel->findBooks($orderBy, $order, $filter, $paginator->getLength(), $paginator->getOffset());
+
         if ($order == "asc") {
             $order = "desc";
         } else {
             $order = "asc";
         }
+
+
+
+        $this->template->paginator = $paginator;
         $this->template->orderPrev = $orderBy;
         $this->template->order     = $order;
+        $this->template->filter = $filter; 
         $this->template->genres    = $this->genresModel->findGendres();
 
     }
@@ -122,6 +137,7 @@ class BookPresenter extends Nette\Application\UI\Presenter
 
     public function handleRate($id, $rating)
     {
+        
         if ($this->user->isLoggedIn()) {  
             $this->booksModel->rateBook($this->user->id, $id, $rating);
         }

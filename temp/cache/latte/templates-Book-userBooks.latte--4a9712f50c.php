@@ -70,6 +70,8 @@ class Template4a9712f50c extends Latte\Runtime\Template
 ?>
 </div>
 </div>
+
+
 <?php
 	}
 
