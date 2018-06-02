@@ -14,11 +14,22 @@ class BooksModel
     /** @var PDO $pdo */
     private $pdo;
 
-    public function findUsersBooks($userId)
+    public function findUsersBooks($userId,$bookId)
     {
-        $query = $this->pdo->prepare('SELECT books.* FROM books join user_books on books.id = user_books.bookId
-        WHERE user_books.userId = ?');
-        $query->execute([$userId]);
+        
+        $param = [];
+        $param[] = $userId;
+
+        $sql = 'SELECT books.* FROM books join user_books on books.id = user_books.bookId WHERE user_books.userId = ? ';
+        
+        if (!empty($bookId)) {
+            $sql .= 'and user_books.BookId = ?';
+            $param[] = $bookId;
+        }
+
+        $query = $this->pdo->prepare($sql); 
+
+        $query->execute($param);
         return $query->fetchAll(PDO::FETCH_CLASS, __NAMESPACE__ . '\Entities\Book');
 
     }
@@ -28,14 +39,15 @@ class BooksModel
         $param = [];
         $param[]=$id;
         if ($userId > 0) {
-            
-            $sql = 'select books.*, user_books.userRating as userRating from books left join 
-            user_books on books.id = user_books.bookId where books.id = ? and user_books.userId = ?';
-            $param[] = $userId;
+             
+            $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/COUNT(user_books.userRating)) 
+* 100)) as rating, ub.userRating as userRating from books join user_books ub on ub.bookId = books.id  left join  user_books on user_books.bookId = books.id where books.id = ? and ub.userId = ?';
+            $param[] = $userId;  
         }
         else
         {
-           $sql = 'SELECT * FROM books where id =?';
+           $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/COUNT(user_books.userRating)) 
+* 100)) as rating from books left join user_books on user_books.bookId = books.id where books.id = ?';
            
         }
         
@@ -45,50 +57,87 @@ class BooksModel
         return $query->fetchObject(__NAMESPACE__ . '\Entities\Book');
     }
 
-    public function findBooksCount($filter)
+    public function findBooksCount($filter, $userId)
     {
+        
+        $params = []; 
         $sql = 'SELECT COUNT(*) FROM books ';
-        if (!empty($filter)) {
-          $sql .= 'where genreId = :genreId';
+
+        
+       if (!empty($userId)) {
+          $sql .= 'inner join user_books on books.Id = user_books.bookId where user_books.userId = ? ';
+          $params[] = $userId;
         }
         
-        $query = $this->pdo->prepare($sql);
         if (!empty($filter)) {
-          $query->bindParam(':genreId',$filter,PDO::PARAM_INT);
+          if (!empty($userId))
+          {
+            $sql .= 'and genreId = ?';
+          } 
+          else
+          {
+            $sql .= 'where genreId = ?';
+          }
+          
+          $params[] = $filter;
         }
-       $query->execute();
+   
+        $query = $this->pdo->prepare($sql); 
+       $query->execute($params);
+
        return $query->fetchColumn();
 
     }
 
-    public function findBooks($orderBy, $order, $filter,$limit,$offset)
+    public function findBooks($orderBy, $order, $filter,$limit,$offset,$userId)
     {
-        $param = [];
+       
+  
         $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/COUNT(user_books.userRating)) 
-* 100)) as rating from books left join user_books on user_books.bookId = books.id ';
-        if (!empty($filter)) {
-            $sql .= 'WHERE books.genreId = :genreId ';
-        }
+        * 100)) as rating from books left join user_books on user_books.bookId = books.id ';
+       
+        if (!empty($userId))
+        {
+            $sql .= 'join user_books ub on ub.bookId = books.Id ';
+            $sql .= 'where ub.userId = :userId ';
+         }      
 
+
+
+
+        if (!empty($filter)) {
+            if (!empty($userId))
+            {
+                $sql .= 'and books.genreId = :genreId ';
+            }
+            else 
+            {
+               $sql .= 'WHERE books.genreId = :genreId '; 
+            }
+            
+        }
+        
         if (!(in_array($orderBy, ["name", "author", "year", "rating"]) && in_array($order, ["asc", "desc"]))) {
            $orderBy = 'name';
            $order =  'asc'; 
         }
-
          $sql .= 'GROUP BY books.id '; 
-
          $sql .= 'ORDER BY ' . $orderBy . " " . $order;
-
          $sql .= ' LIMIT :limit OFFSET :offset';
-  
+
         $query = $this->pdo->prepare($sql);
         $query->bindParam(':offset',$offset,PDO::PARAM_INT);
         $query->bindParam(':limit',$limit,PDO::PARAM_INT);
         if (!empty($filter)) {
           $query->bindParam(':genreId',$filter,PDO::PARAM_INT);
         }
+        if (!empty($userId)) {
+          $query->bindParam(':userId',$userId,PDO::PARAM_INT);
+        }
+   
         $query->execute();
         return $query->fetchAll(PDO::FETCH_CLASS, __NAMESPACE__ . '\Entities\Book');
+
 
     }
 
@@ -111,7 +160,6 @@ class BooksModel
 
     public function deleteBookFromUser($bookId,$userId)
     {
-  
         $sql = 'DELETE FROM user_books WHERE bookId = ? and userId = ?';
         $query = $this->pdo->prepare($sql);
         $result = $query->execute([$bookId,$userId]);

@@ -36,9 +36,13 @@ class Template4252c3b03c extends Latte\Runtime\Template
 		extract($_args);
 ?>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">BookHero</a>
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand" href="#">BookHero</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarToggler">
         <ul class="navbar-nav mr-auto">
             <li <?php if ($_tmp = array_filter(['nav-item', $presenter->isLinkCurrent('Book:list') ? 'active' : NULL])) echo ' class="', LR\Filters::escapeHtmlAttr(implode(" ", array_unique($_tmp))), '"' ?>>
                 <a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:list", ['orderBy'=>'name'])) ?>">Seznam Knih</a>
@@ -50,12 +54,26 @@ class Template4252c3b03c extends Latte\Runtime\Template
             </li>
 <?php
 		}
+		if ($user->isInRole('admin') == 1) {
 ?>
-        </ul>
-    </div>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Správa<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:list")) ?>">Seznam uživatelů</a></li>
+                <li><a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:add")) ?>">Přidání knih</a> </li>
+                <li><a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:addGenre")) ?>">Přidat žánr</a> </li>
+              </ul>
+            </li>
+<?php
+		}
+?>
+                
+          
 
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
+
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
 <?php
 		if (!$user->isLoggedIn()) {
 ?>

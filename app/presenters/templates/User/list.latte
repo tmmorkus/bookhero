@@ -1,0 +1,48 @@
+{block content}
+   
+ 
+  {if !empty($users)}
+    
+    
+  <table class="table table-hover">
+  <thead>
+     <tr>
+      <th><a href="{link User:List orderBy=>id, order=>$order, orderPrev=>$orderPrev}">ID</a></th>
+      <th><a href="{link User:List orderBy=>email, order=>$order, orderPrev=>$orderPrev}">email</a></th>
+      <th><a href="{link User:List orderBy=>role, order=>$order, orderPrev=>$orderPrev}">role</a></th>
+      <th> </th>
+    </tr>
+  </thead>
+   <tbody>
+    {foreach $users as $userS}
+     <tr>
+      <td>{$userS->id}</td>
+      <td>{$userS->email}</td>
+      <td>{$userS->role}</td>
+      <td><a n:href="admin!, id => $userS->id">Změnit práva</a></td>
+      <td><a n:href="delete!, id => $userS->id">Odstranit uživatele</a></td>
+
+     </tr>
+    {/foreach}
+    </tbody>  
+    </table>
+    <div class="pagination">
+    {if !$paginator->isFirst()}
+        <a n:href="list, 1, orderBy=>$orderPrev,order=>$order, orderPrev=>$orderPrev">První</a>
+        &nbsp;|&nbsp;
+        <a n:href="list, page => $paginator->page-1, orderBy=>$orderPrev,order=>$order, orderPrev=>$orderPrev">Předchozí</a>
+        &nbsp;|&nbsp;
+    {/if}
+
+    Stránka {$paginator->page} z {$paginator->pageCount}
+    {if !$paginator->isLast()}
+        &nbsp;|&nbsp;
+        <a n:href="list, page => $paginator->page+1, orderBy=>$orderPrev,order=>$order, orderPrev=>$orderPrev">Další</a>
+        &nbsp;|&nbsp;
+        <a n:href="list, page => $paginator->pageCount,orderBy=>$orderPrev,order=>$order, orderPrev=>$orderPrev">Poslední</a>
+    {/if}
+</div>
+  {else}
+    <p>V seznamu nejsou žádní uživatelé</p>
+  {/if}
+

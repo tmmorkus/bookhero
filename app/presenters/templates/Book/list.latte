@@ -1,6 +1,7 @@
 {block content}
-
-  <select name="forma" onchange="location = this.value;">
+  
+  <label for="genreSelect">Filtr dle žánru: </label> 
+  <select id = "genreSelect" class="custom-select" name="forma" onchange="location = this.value;">
     <option {if empty($filter)}selected{/if}  value= "{link Book:list page=>1,orderBy=>name, order=>$order, orderPrev=>$orderPrev}" > </option>
 
    {foreach $genres as $genre}
@@ -13,7 +14,7 @@
   {if !empty($books)}
     
     
-  <table>
+  <table class="table table-hover">
   <thead>
      <tr>
       <th><a href="{link Book:list orderBy=>name, order=>$order, orderPrev=>$orderPrev}">Název</a></th>
@@ -31,13 +32,20 @@
       <td>{$book->author}</td>
       <td>{$book->year}</td>
       <td>{$book->isbn}</td>
-      <td>{$book->rating}%</td>
+      <td>{if empty($book->rating)} {else}{$book->rating}%{/if}</td>
      {if $user->isLoggedIn()}
-      <td> 
-        {form addBookToUserForm}
-          <input type="hidden" name="bookId" value="{$book->id}" >
-          <input type = "submit" value = "přidat do kolekce">
-        {/form}
+      <td>
+      {var $change = false} 
+      {foreach $userBooks as $uBook}
+        {if $uBook->id == $book->id}
+           {var $change = true} 
+        {/if}
+      {/foreach}
+      {if $change == false}
+          <a n:href="addBookToUser!,bookId => $book->id" >Přidat do seznamu</a>
+      {else}
+          <a n:href="deleteBookFromUser!,bookId => $book->id" >Odebrat ze seznamu</a>
+      {/if}
       </td>
      {/if}
      </tr>

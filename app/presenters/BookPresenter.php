@@ -20,38 +20,7 @@ class BookPresenter extends Nette\Application\UI\Presenter
     private $booksModel;
     private $genresModel;
 
-    public function renderList($orderBy, $order, $orderPrev, $filter,$page = 1)
-    {
 
-        if ($orderBy != $orderPrev) {
-            $order = "asc";
-        }
-
-        $booksCount = $this->booksModel->findBooksCount($filter);
-
-        $paginator = new Paginator();
-        $paginator->setItemCount($booksCount);
-        $paginator->setItemsPerPage(2);
-        $paginator->setPage($page); 
-    
-
-        $this->template->books = $this->booksModel->findBooks($orderBy, $order, $filter, $paginator->getLength(), $paginator->getOffset());
-
-        if ($order == "asc") {
-            $order = "desc";
-        } else {
-            $order = "asc";
-        }
-
-
-
-        $this->template->paginator = $paginator;
-        $this->template->orderPrev = $orderBy;
-        $this->template->order     = $order;
-        $this->template->filter = $filter; 
-        $this->template->genres    = $this->genresModel->findGendres();
-
-    }
 
     public function createComponentFilterForm()
     {
@@ -60,45 +29,30 @@ class BookPresenter extends Nette\Application\UI\Presenter
         return $form;
     }
 
-    public function createComponentDeleteBookFromUserForm()
-    {
-        $form = new Form;
 
-        $form->onSuccess[] = [$this, 'deleteBookFromUser'];
-        return $form;
-    }
 
-    public function deleteBookFromUser($form, $values)
+    public function handleDeleteBookFromUser($bookId)
     {
-        $data   = $form->getHttpData();
-        $result = $this->booksModel->deleteBookFromUser($data["bookId"], $this->user->id);
+        
+        
+        $result = $this->booksModel->deleteBookFromUser($bookId, $this->user->id);
         if ($result) {
             $this->flashMessage('Kniha odebrána z Vašeho seznamu');
         }
-        $this->redirect('this');
+       
 
     }
 
-    public function createComponentAddBookToUserForm()
+    public function handleAddBookToUser($bookId)
     {
-        $form = new Form;
-
-        $form->onSuccess[] = [$this, 'addBookToUserFormSucceeded'];
-        return $form;
-    }
-
-    public function addBookToUserFormSucceeded($form, $values)
-    {
-        $data = $form->getHttpData();
-
-        $result = $this->booksModel->addBookToUser($data["bookId"], $this->user->id);
+        $result = $this->booksModel->addBookToUser($bookId, $this->user->id);
         if ($result) {
             $this->flashMessage('Kniha přidána do Vašeho seznamu');
         } else {
             $this->flashMessage('Kniha se již ve Vašem seznamu nachází');
         }
-        $this->redirect('this');
     }
+
 
     public function createComponentAddBookForm()
     {
@@ -137,18 +91,78 @@ class BookPresenter extends Nette\Application\UI\Presenter
 
     public function handleRate($id, $rating)
     {
-        
-        if ($this->user->isLoggedIn()) {  
+
+        if ($this->user->isLoggedIn()) {
             $this->booksModel->rateBook($this->user->id, $id, $rating);
         }
 
     }
 
-    public function renderUserBooks()
+    public function renderUserBooks($filter,$page = 1)
     {
-        $this->template->books = $this->booksModel->findUsersBooks($this->user->id);
+         
+        $books = $this->getBooks("name","asc",$filter,8,$page,$this->user->id) ;
+        $this->template->books = $books[1];
+        $this->template->genres    = $this->genresModel->findGendres();
+        $this->template->filter = $filter;
+        $this->template->paginator = $books[0];
+    }
+    
+
+    private function getBooks($orderBy, $order,$filter,$itemsNumb,$page,$user)
+    {
+        $booksCount = $this->booksModel->findBooksCount($filter, null);
+    
+
+        $paginator = new Paginator();
+        $paginator->setItemCount($booksCount);
+        $paginator->setItemsPerPage($itemsNumb);
+        $paginator->setPage($page);
+        
+        $returnArr = []; 
+        $returnArr[] = $paginator;
+        $returnArr[] = $this->booksModel->findBooks($orderBy, $order, $filter, $paginator->getLength(), $paginator->getOffset(),$user);
+        if ($this->user->isLoggedIn()) {
+         $returnArr[] = $this->booksModel->findUsersBooks($this->user->id,null);
+        }
+        else
+       {
+        $returnArr[] = "";
+       }
+        return $returnArr; 
+
     }
 
+
+    public function renderList($orderBy, $order, $orderPrev, $filter, $page = 1)
+    {
+
+        if ($orderBy != $orderPrev) {
+            $order = "asc";
+        }
+       
+       
+        $books = $this->getBooks($orderBy, $order, $filter,10, $page, null);
+
+        $this->template->books = $books[1];
+
+        if ($order == "asc") {
+            $order = "desc";
+        } else {
+            $order = "asc";
+        }
+
+        $this->template->paginator = $books[0];
+        $this->template->orderPrev = $orderBy;
+        $this->template->order     = $order;
+        $this->template->filter    = $filter;
+        $this->template->genres    = $this->genresModel->findGendres();
+        $this->template->userBooks = $books[2];
+
+    }
+
+  
+   
     public function addBookSucceeded($form, $values)
     {
 
@@ -190,17 +204,29 @@ class BookPresenter extends Nette\Application\UI\Presenter
         $this->redirect('this', ["filter" => $data["genres"]]);
     }
 
-    public function renderShow($id)
+    public function renderShow($id, $rating)
     {
-      
+
+
+
         if ($this->user->isLoggedIn()) {
-           $userId = $this->user->id;
+            $userId = $this->user->id;
+        } else {
+            $userId = 0;
         }
-        else
-        {
-           $userId = 0; 
+
+        $this->template->actualRating = $rating;
+
+        $userBook = "";
+        if ($this->user->isLoggedIn()) {
+
+         $userBook = $this->booksModel->findUsersBooks($this->user->id,$id);
+
         }
-        $this->template->book   = $this->booksModel->findBook($id,$userId);
+
+        $this->template->userBook = $userBook;
+
+        $this->template->book = $this->booksModel->findBook($id, $userId);
     }
 
     public function injectGenresModel(GenresModel $genresModel)

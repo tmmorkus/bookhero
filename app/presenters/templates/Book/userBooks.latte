@@ -1,22 +1,52 @@
 {block content}
-<div class="container"> 
+<div class="container">
+  <label for="genreSelect">Filtr dle žánru: </label> 
+  <select class ="marBot custom-select" name="forma" onchange="location = this.value;">
+    <option {if empty($filter)}selected{/if} value= "{link Book:UserBooks}"></option>
+
+   {foreach $genres as $genre}
+    <option {if $genre->id == $filter}selected{/if}  value= "{link Book:UserBooks filter=>$genre->id}" > {$genre->name} </option>
+   {/foreach}
+  </select>
+ {if !empty($books)}
+
 <div class = "row"> 
 {foreach $books as $book}
- <div class = "col-sm-3 text-center">
-   <table>
+ <div class = "col-md-3 col-sm-4 col-xs-6  text-center">
+   <table class="marBot">
    	<tbody>
    	 <tr><td><a href="{link Book:show id=>$book->id}"> {$book->name} </a></tr></td>
    	 <tr><td><img src="{$basePath.'/'.$book->img}" alt="{$book->name} přebal" height="160" width="100"></tr></td>
-   	 <tr><td> {form deleteBookFromUserForm}
-          <input type="hidden" name="bookId" value="{$book->id}" >
-          <input type = "submit" value = "odebrat">
-     {/form}
+   	 <tr ><td> 
+          <a n:href="deleteBookFromUser!,bookId => $book->id" >Odebrat ze seznamu</a>
      </tr></td>
      </tbody>
    </table>
  </div>
 {/foreach}	
+
+
 </div>
+
+<div class="pagination text-center col-sm-12">
+    {if !$paginator->isFirst()}
+        <a n:href="list, 1, orderBy=>$orderPrev,filter=>$filter,order=>$order, orderPrev=>$orderPrev">První</a>
+        &nbsp;|&nbsp;
+        <a n:href="list, page => $paginator->page-1, orderBy=>$orderPrev,filter=>$filter">Předchozí</a>
+        &nbsp;|&nbsp;
+    {/if}
+
+    Stránka {$paginator->page} z {$paginator->pageCount}
+    {if !$paginator->isLast()}
+        &nbsp;|&nbsp;
+        <a n:href="list, page => $paginator->page+1, orderBy=>$orderPrev,filter=>$filter">Další</a>
+        &nbsp;|&nbsp;
+        <a n:href="list, page => $paginator->pageCount,orderBy=>$orderPrev,filter=>$filter">Poslední</a>
+    {/if}
+</div>
+  {else}
+    <p>V seznamu nejsou žádné knihy</p>
+  {/if}
 </div>
 
 

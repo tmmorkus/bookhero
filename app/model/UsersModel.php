@@ -41,6 +41,63 @@ class UsersModel implements \Nette\Security\IAuthenticator
         return $query->fetchObject(__NAMESPACE__ . '\Entities\User');
     }
 
+    public function findUserRole($id)
+    {
+      $sql = 'SELECT role from users where id =?';
+       $query = $this->pdo->prepare($sql); 
+       $query->execute([$id]);
+
+       return $query->fetchColumn();
+    }
+    public function findUsersCount()
+    {
+       $sql = 'SELECT COUNT(*) from users';
+       $query = $this->pdo->prepare($sql); 
+       $query->execute();
+
+       return $query->fetchColumn();
+    }
+
+    public function deleteUser ($id)
+    {
+      $sql = 'DELETE FROM users where id =?';
+       $query = $this->pdo->prepare($sql); 
+       $result = $query->execute([$id]);
+
+       return  $result;
+    }
+    
+    public function updateRoles($id, $role) 
+    {
+
+      $sql = 'UPDATE users set role = ? where id = ?';
+        $query = $this->pdo->prepare($sql); 
+      $result = $query->execute([$role,$id]);
+        return $result; 
+
+    }
+
+    public function findUsers($orderBy, $order, $limit,$offset)
+    {
+        $sql = 'SELECT * FROM users '; 
+       if (!(in_array($orderBy, ["id", "email","role"]) && in_array($order, ["asc", "desc"]))) {
+           $orderBy = 'id';
+           $order =  'asc'; 
+        }
+         $sql .= 'GROUP BY users.id '; 
+         $sql .= 'ORDER BY ' . $orderBy . " " . $order;
+         $sql .= ' LIMIT :limit OFFSET :offset';
+
+
+        $query = $this->pdo->prepare($sql);
+        $query->bindParam(':offset',$offset,PDO::PARAM_INT);
+        $query->bindParam(':limit',$limit,PDO::PARAM_INT);
+   
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_CLASS, __NAMESPACE__ . '\Entities\Book');
+
+    }
+
     /**
      * Funkce pro nalezení uživatele podle e-mailu
      * @param string $email

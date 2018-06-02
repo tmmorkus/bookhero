@@ -7,6 +7,7 @@ use App\Model\UsersModel;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextInput;
+use Nette\Utils\Paginator;
 
 /**
  * Class UserPresenter
@@ -73,9 +74,62 @@ class UserPresenter extends BasePresenter{
         $form->addError('Nesprávné přihlašovací jméno nebo heslo.');
       }
       if ($this->user->isLoggedIn()){
-        $this->flashMessage($this->user->isInRole('admin'));
-        $this->redirect('Homepage:default');
+        //$this->flashMessage($this->user->isInRole('admin'));
+        //$this->redirect('Homepage:default');
       }
+  }
+
+
+    public function handleAdmin($id)
+    {
+        $userRole = $this->usersModel->findUserRole($id);
+        $role ="";
+        if ($userRole == "admin") {
+           $role = "registered";
+         } 
+         else 
+         {
+           $role = "admin";
+         }
+        $this->usersModel->updateRoles($id, $role); 
+    }
+
+    public function handleDelete($id)
+    {
+     if ($this->usersModel->deleteUser($id))
+    {
+        $this->flashMessage('Uživatel by smazán.');
+    }
+     
+    }
+
+  public function renderList($order,$orderBy,$page,$orderPrev)
+  {
+       $usersCount = $this->usersModel->findUsersCount();
+    
+        if ($orderBy != $orderPrev) {
+            $order = "asc";
+        }
+       
+
+        $paginator = new Paginator();
+        $paginator->setItemCount($usersCount);
+        $paginator->setItemsPerPage(10);
+        $paginator->setPage($page);
+        
+        $this->template->users = $this->usersModel->findUsers($orderBy, $order, $paginator->getLength(),$paginator->getOffset());
+
+         if ($order == "asc") {
+            $order = "desc";
+        } else {
+            $order = "asc";
+        }
+
+        $this->template->paginator = $paginator;
+        $this->template->orderPrev = $orderBy;
+        $this->template->order     = $order;
+    
+
   }
 
   /**

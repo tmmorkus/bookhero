@@ -1,8 +1,12 @@
 {block navbar}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">BookHero</a>
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand" href="#">BookHero</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarToggler">
         <ul class="navbar-nav mr-auto">
             <li  n:class="nav-item, $presenter->isLinkCurrent('Book:list') ? active" >
                 <a class="nav-link" href="{link Book:list orderBy=>name}">Seznam Knih</a>
@@ -12,11 +16,23 @@
                 <a class="nav-link" href="{link Book:userBooks}">Uživatelský seznam</a>
             </li>
             {/if}
-        </ul>
-    </div>
+            {if $user->isInRole('admin') == 1}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Správa<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{link User:list}">Seznam uživatelů</a></li>
+                <li><a class="nav-link" href="{link Book:add}">Přidání knih</a> </li>
+                <li><a class="nav-link" href="{link Book:addGenre}">Přidat žánr</a> </li>
+              </ul>
+            </li>
+           {/if}
+                
+          
 
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
+
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
           {if !$user->isLoggedIn()}
             <li class="nav-item">
                 <a class="nav-link" href="{link User:login}">Přihlásit</a>
