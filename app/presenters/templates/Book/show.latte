@@ -1,6 +1,6 @@
 {block content}
 <div class = "container">
-	<h2>{$book->name}</h2>
+	<h1>{$book->name}</h1>
 	<div class = "row">
 
 		<div class = "col-lg-2 col-md-3 col-sm-4">
@@ -8,6 +8,12 @@
 		</div>
 		<div class = "col-lg-10 col-md-9 col-sm-8">
 		<table>
+		  {if $user->isInRole('admin') == 1}
+          <td> 
+            <a n:href="Book:edit,id => $book->id">Editovat</a>
+           </td>
+           {/if}
+
 			<tr>
 				<td class="font-weight-bold">Autor: </td>
 				<td>{$book->author}</td>
@@ -18,7 +24,7 @@
 			<tr>
 			<tr>
 				<td class="font-weight-bold">Žánr: </td>
-				<td>{$book->author}</td>
+				<td>{$genres}</td>
 			<tr>
 			<tr>
 				<td class="font-weight-bold">ISBN: </td>
@@ -27,7 +33,7 @@
 			{if $book->rating >= 0 } 	
 			<tr>
 				<td class="font-weight-bold">Hodnocení: </td>
-				<td>{$book->rating}%</td>
+				<td>{if empty($book->rating)}0%{else}{$book->rating}%{/if}</td>
 			<tr>	
 			{/if}
 			{if $user->isLoggedIn() && !empty($userBook)}
@@ -37,10 +43,22 @@
   				<td><a n:href="rate!, rating => $rat1"><i class="far fa-thumbs-up" style="color:{if $book->userRating == 1} green {else} blue {/if} ; font-size: 24px;"></i></a>
   				<a n:href="rate!,rating => $rat2" ><i class="far fa-thumbs-down" style="color:{if $book->userRating == 2} red {else} blue {/if}; font-size: 24px;"></i></a></td>
   			<tr>
+			<tr>	  
+			    <td>	
+               	  <a n:href="deleteBookFromUser!,bookId => $book->id" onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')">Odebrat ze seznamu</a>	
+ 				</td>	
+ 			<tr>
+ 			{elseif $user->isLoggedIn()}
+ 			<tr>
+
+ 			   <td>	
+				<a n:href="addBookToUser!,bookId => $book->id" >Přidat do seznamu</a>
+			   	</td>
+			<tr>  
 			{/if}
 		</table>
 	  </div>
-     <div class = "col-12">Pokud by se pro stejný účel použil smysluplný text, bylo by těžké hodnotit pouze vzhled, aniž by se pozorovatel nechal svést ke čtení obsahu. Pokud by byl naopak použit nesmyslný, ale pravidelný text (např. opakování „asdf asdf asdf…“), oko by při posuzování vzhledu bylo vyrušováno pravidelnou strukturou textu, která se od běžného textu liší. Text lorem ipsum na první pohled připomíná běžný text, slova jsou různě dlouhá, frekvence písmen je podobná běžné řeči, interpunkce vypadá přirozeně atd.</div>
+     <div class = "col-12"> {$book->description} </div>
 		
 	</div>
 </div>

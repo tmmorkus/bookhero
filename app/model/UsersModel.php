@@ -41,6 +41,14 @@ class UsersModel implements \Nette\Security\IAuthenticator
         return $query->fetchObject(__NAMESPACE__ . '\Entities\User');
     }
 
+    public function changePassword($userId,$password)
+    {
+       $sql = 'UPDATE users SET password = ? where id =?';
+       $query = $this->pdo->prepare($sql); 
+       $result = $query->execute([$password,$userId]);
+       return  $result;
+    }
+
     public function findUserRole($id)
     {
       $sql = 'SELECT role from users where id =?';
@@ -60,21 +68,45 @@ class UsersModel implements \Nette\Security\IAuthenticator
 
     public function deleteUser ($id)
     {
-      $sql = 'DELETE FROM users where id =?';
+       
+       $sql = 'DELETE FROM user_books where userId =?';
        $query = $this->pdo->prepare($sql); 
        $result = $query->execute([$id]);
 
+
+      $sql = 'DELETE FROM users where id =?';
+       $query = $this->pdo->prepare($sql); 
+       $result = $query->execute([$id]);
        return  $result;
     }
     
+    public function findByFacebookId ($fbId,$email)
+    {
+       $sql = 'SELECT * from users where fbId = ? or email=?';
+       $query = $this->pdo->prepare($sql); 
+       $query->execute([$fbId, $email]);
+
+       return $query->fetchObject(__NAMESPACE__ . '\Entities\User');
+    }
+
     public function updateRoles($id, $role) 
     {
 
       $sql = 'UPDATE users set role = ? where id = ?';
-        $query = $this->pdo->prepare($sql); 
+      $query = $this->pdo->prepare($sql); 
       $result = $query->execute([$role,$id]);
-        return $result; 
+      return $result; 
 
+    }
+
+    public function registerFromFacebook($id,$email)
+    {
+        $sql     = 'INSERT INTO users (email,fbId,role) VALUES (?,?,?)';
+        $query   = $this->pdo->prepare($sql);
+        $result = $query->execute([$email,$id,"registered"]);
+        $dbId = $this->pdo->lastInsertId();
+ 
+        return $this->findById($dbId);
     }
 
     public function findUsers($orderBy, $order, $limit,$offset)
@@ -154,7 +186,7 @@ class UsersModel implements \Nette\Security\IAuthenticator
         if (!$user->isValidPassword($password)) {
             throw new AuthenticationException('Chybné heslo.', self::INVALID_CREDENTIAL);
         }
-        return new Identity($user->id, $user->role, ['email' => $user->email]);
+        return new Identity($user->id, $user->role, ['email' => $user->email, 'password' => $user->password]);
     }
 
     /**

@@ -27,8 +27,8 @@ class Template9317c36948 extends Latte\Runtime\Template
 	{
 		extract($this->params);
 		if (isset($this->params['genre'])) trigger_error('Variable $genre overwritten in foreach on line 7');
-		if (isset($this->params['uBook'])) trigger_error('Variable $uBook overwritten in foreach on line 39');
-		if (isset($this->params['book'])) trigger_error('Variable $book overwritten in foreach on line 29');
+		if (isset($this->params['uBook'])) trigger_error('Variable $uBook overwritten in foreach on line 45');
+		if (isset($this->params['book'])) trigger_error('Variable $book overwritten in foreach on line 35');
 		Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->parentName, $this->blocks);
 		
 	}
@@ -38,14 +38,14 @@ class Template9317c36948 extends Latte\Runtime\Template
 	{
 		extract($_args);
 ?>
-  
+  <h1>Seznam knih</h1>
   <label for="genreSelect">Filtr dle žánru: </label> 
   <select id = "genreSelect" class="custom-select" name="forma" onchange="location = this.value;">
     <option <?php
 		if (empty($filter)) {
 			?>selected<?php
 		}
-		?>  value= "<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:list", ['page'=>1,'orderBy'=>'name', 'order'=>$order, 'orderPrev'=>$orderPrev])) ?>" > </option>
+		?>  value= "<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:list", ['page'=>1,'orderBy'=>'name', 'order'=>$order, 'orderPrev'=>$orderPrev])) ?>" >vypnout filtr</option>
 
 <?php
 		$iterations = 0;
@@ -77,7 +77,19 @@ class Template9317c36948 extends Latte\Runtime\Template
       <th><a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:list", ['orderBy'=>'year', 'order'=>$order, 'orderPrev'=>$orderPrev])) ?>">Rok vydání</a></th>
       <th>ISBN</th>
       <th><a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:list", ['orderBy'=>'rating', 'order'=>$order, 'orderPrev'=>$orderPrev])) ?>">Hodnocení</a></th>
-      <th> </th>
+<?php
+			if ($user->isLoggedIn()) {
+?>
+      <th></th>
+<?php
+			}
+			if ($user->isInRole('admin') == 1) {
+?>
+      <th></th>
+      <th></th>
+<?php
+			}
+?>
     </tr>
   </thead>
    <tbody>
@@ -87,16 +99,16 @@ class Template9317c36948 extends Latte\Runtime\Template
 ?>
      <tr>
       <td><a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:show", ['id'=>$book->id])) ?>"><?php
-				echo LR\Filters::escapeHtmlText($book->name) /* line 31 */ ?></a></td>
-      <td><?php echo LR\Filters::escapeHtmlText($book->author) /* line 32 */ ?></td>
-      <td><?php echo LR\Filters::escapeHtmlText($book->year) /* line 33 */ ?></td>
-      <td><?php echo LR\Filters::escapeHtmlText($book->isbn) /* line 34 */ ?></td>
+				echo LR\Filters::escapeHtmlText($book->name) /* line 37 */ ?></a></td>
+      <td><?php echo LR\Filters::escapeHtmlText($book->author) /* line 38 */ ?></td>
+      <td><?php echo LR\Filters::escapeHtmlText($book->year) /* line 39 */ ?></td>
+      <td><?php echo LR\Filters::escapeHtmlText($book->isbn) /* line 40 */ ?></td>
       <td><?php
 				if (empty($book->rating)) {
-					?> <?php
+					?>0%<?php
 				}
 				else {
-					echo LR\Filters::escapeHtmlText($book->rating) /* line 35 */ ?>%<?php
+					echo LR\Filters::escapeHtmlText($book->rating) /* line 41 */ ?>%<?php
 				}
 ?></td>
 <?php
@@ -117,15 +129,25 @@ class Template9317c36948 extends Latte\Runtime\Template
 <?php
 					}
 					else {
-						?>          <a  href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBookFromUser!", ['bookId' => $book->id])) ?>">Odebrat ze seznamu</a>
+						?>          <a onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBookFromUser!", ['bookId' => $book->id])) ?>">Odebrat ze seznamu</a>
 <?php
 					}
 ?>
       </td>
 <?php
 				}
+				if ($user->isInRole('admin') == 1) {
 ?>
-     </tr>
+       <td> 
+         <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:edit", ['id' => $book->id])) ?>">Editovat</a>
+       </td>
+       <td> 
+        <a onclick="return confirm('Opravdu chcete knihu smazat?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBook!", ['bookId' => $book->id])) ?>">Smazat</a>
+       </td>
+<?php
+				}
+?>
+       </tr>
 <?php
 				$iterations++;
 			}
@@ -143,7 +165,7 @@ class Template9317c36948 extends Latte\Runtime\Template
 			}
 ?>
 
-    Stránka <?php echo LR\Filters::escapeHtmlText($paginator->page) /* line 63 */ ?> z <?php echo LR\Filters::escapeHtmlText($paginator->pageCount) /* line 63 */ ?>
+    Stránka <?php echo LR\Filters::escapeHtmlText($paginator->page) /* line 77 */ ?> z <?php echo LR\Filters::escapeHtmlText($paginator->pageCount) /* line 77 */ ?>
 
 <?php
 			if (!$paginator->isLast()) {

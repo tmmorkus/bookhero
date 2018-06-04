@@ -37,7 +37,7 @@ class Template35da89681f extends Latte\Runtime\Template
 		extract($_args);
 ?>
    
- 
+ <h1>Správa uživatelů</h1>
 <?php
 		if (!empty($users)) {
 ?>
@@ -56,16 +56,17 @@ class Template35da89681f extends Latte\Runtime\Template
 <?php
 			$iterations = 0;
 			foreach ($users as $userS) {
+				if ($user->id != $userS->id) {
 ?>
      <tr>
-      <td><?php echo LR\Filters::escapeHtmlText($userS->id) /* line 19 */ ?></td>
-      <td><?php echo LR\Filters::escapeHtmlText($userS->email) /* line 20 */ ?></td>
-      <td><?php echo LR\Filters::escapeHtmlText($userS->role) /* line 21 */ ?></td>
+      <td><?php echo LR\Filters::escapeHtmlText($userS->id) /* line 20 */ ?></td>
+      <td><?php echo LR\Filters::escapeHtmlText($userS->email) /* line 21 */ ?></td>
+      <td><?php echo LR\Filters::escapeHtmlText($userS->role) /* line 22 */ ?></td>
       <td><a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("admin!", ['id' => $userS->id])) ?>">Změnit práva</a></td>
-      <td><a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("delete!", ['id' => $userS->id])) ?>">Odstranit uživatele</a></td>
-
+      <td><a onclick="return confirm('Opravdu chcete smazat uživatele?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("delete!", ['id' => $userS->id])) ?>">Odstranit uživatele</a></td>
      </tr>
 <?php
+				}
 				$iterations++;
 			}
 ?>
@@ -82,7 +83,7 @@ class Template35da89681f extends Latte\Runtime\Template
 			}
 ?>
 
-    Stránka <?php echo LR\Filters::escapeHtmlText($paginator->page) /* line 37 */ ?> z <?php echo LR\Filters::escapeHtmlText($paginator->pageCount) /* line 37 */ ?>
+    Stránka <?php echo LR\Filters::escapeHtmlText($paginator->page) /* line 38 */ ?> z <?php echo LR\Filters::escapeHtmlText($paginator->pageCount) /* line 38 */ ?>
 
 <?php
 			if (!$paginator->isLast()) {

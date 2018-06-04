@@ -14,13 +14,20 @@ namespace App\Model\Entities;
  * @property string $isbn
  * @property string $category
  * @property string $userRating 
+ * @property array $genres
  * @property int $rating 
  * @property string|null $img
 
  */
 class Book{
 
-
+  
+    public function __construct () {
+    
+    if (!empty($this->genres)) {
+       $this->genres = explode(",",$this->genres);
+    }
+  }
 
 
   /**
@@ -36,7 +43,7 @@ class Book{
       'pages'=>@$this->pages,
       'isbn'=>@$this->isbn,
       'img'=>@$this->img,
-      'genre'=>@$this->genre,
+      'genres'=>@$this->genres,
       'rating' =>@$this->userRating,
     ];
     if (!empty($this->id)){

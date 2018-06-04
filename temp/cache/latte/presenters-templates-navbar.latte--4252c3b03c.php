@@ -36,8 +36,9 @@ class Template4252c3b03c extends Latte\Runtime\Template
 		extract($_args);
 ?>
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <a class="navbar-brand" href="#">BookHero</a>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light marBot">
+  <span class="navbar-brand" >BookHero</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -67,13 +68,16 @@ class Template4252c3b03c extends Latte\Runtime\Template
 <?php
 		}
 ?>
-                
-          
-
-
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
+           <li class="nav-item">
+            <form class="form-inline my-2 my-lg-0" method="GET" id="searchForm">
+                <input class="form-control mr-sm-2" id="findBook" type="search" placeholder="Název knihy" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" id="searchBtn">Search</button>
+            </form>
+          </li>
+           
 <?php
 		if (!$user->isLoggedIn()) {
 ?>
@@ -87,6 +91,12 @@ class Template4252c3b03c extends Latte\Runtime\Template
 		}
 		else {
 ?>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"><?php echo LR\Filters::escapeHtmlText($user->getIdentity()->email) /* line 49 */ ?><span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:changePassword")) ?>">Změna hesla</a></li>
+              </ul>
+            </li>
              <li class="nav-item">
                 <a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:logout")) ?>">Odhlásit</a>
             </li>

@@ -43,9 +43,10 @@ class Template5509754214 extends Latte\Runtime\Template
 		/* line 4 */ $_tmp = $this->global->uiControl->getComponent("loginForm");
 		if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(null, false);
 		$_tmp->render();
-?>
+		?>  <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("fbLogin-open!")) ?>"><img src="<?php
+		echo LR\Filters::escapeHtmlAttr(LR\Filters::safeUrl($basePath.'/images/icons/fb_login.png')) /* line 5 */ ?>" alt="Facebook login" height="40" width="170"></a> 
 
-  <p>Nemáte zatím svůj účet? <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:register")) ?>">Zaregistrujte se...</a></p><?php
+  <p class="marToop">Nemáte zatím svůj účet? <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:register")) ?>">Zaregistrujte se...</a></p><?php
 	}
 
 

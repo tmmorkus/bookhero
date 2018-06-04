@@ -1,6 +1,6 @@
 {block content}
    
- 
+ <h1>Správa uživatelů</h1>
   {if !empty($users)}
     
     
@@ -15,14 +15,15 @@
   </thead>
    <tbody>
     {foreach $users as $userS}
+    {if $user->id != $userS->id}
      <tr>
       <td>{$userS->id}</td>
       <td>{$userS->email}</td>
       <td>{$userS->role}</td>
       <td><a n:href="admin!, id => $userS->id">Změnit práva</a></td>
-      <td><a n:href="delete!, id => $userS->id">Odstranit uživatele</a></td>
-
+      <td><a n:href="delete!, id => $userS->id" onclick="return confirm('Opravdu chcete smazat uživatele?')">Odstranit uživatele</a></td>
      </tr>
+     {/if}
     {/foreach}
     </tbody>  
     </table>

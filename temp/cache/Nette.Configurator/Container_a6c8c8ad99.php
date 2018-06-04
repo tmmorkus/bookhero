@@ -33,17 +33,23 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 			'Tracy\ILogger' => [1 => ['tracy.logger']],
 			'Tracy\BlueScreen' => [1 => ['tracy.blueScreen']],
 			'Tracy\Bar' => [1 => ['tracy.bar']],
-			'App\Forms\FormFactory' => [1 => ['24_App_Forms_FormFactory']],
-			'App\Model\BooksModel' => [1 => ['25_App_Model_BooksModel']],
-			'App\Model\GenresModel' => [1 => ['26_App_Model_GenresModel']],
-			'Nette\Security\IAuthenticator' => [1 => ['27_App_Model_UsersModel']],
-			'App\Model\UsersModel' => [1 => ['27_App_Model_UsersModel']],
+			'Kdyby\Facebook\Configuration' => [1 => ['facebook.config']],
+			'Kdyby\Facebook\SessionStorage' => [1 => ['facebook.session']],
+			'Kdyby\Facebook\ApiClient' => [1 => ['facebook.apiClient']],
+			'Tracy\IBarPanel' => [1 => ['facebook.panel']],
+			'Kdyby\Facebook\Diagnostics\Panel' => [1 => ['facebook.panel']],
+			'Kdyby\Facebook\Facebook' => [1 => ['facebook.client']],
+			'App\Forms\FormFactory' => [1 => ['29_App_Forms_FormFactory']],
+			'App\Model\BooksModel' => [1 => ['30_App_Model_BooksModel']],
+			'App\Model\GenresModel' => [1 => ['31_App_Model_GenresModel']],
+			'Nette\Security\IAuthenticator' => [1 => ['32_App_Model_UsersModel']],
+			'App\Model\UsersModel' => [1 => ['32_App_Model_UsersModel']],
 			'PDO' => [1 => ['pdo']],
-			'Nette\Application\UI\Presenter' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\Application\UI\Control' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\Application\UI\Component' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\ComponentModel\Container' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\ComponentModel\Component' => [['application.1', 'application.2', 'application.4', 'application.5']],
+			'Nette\Application\UI\Presenter' => [['application.1', 'application.2', 'application.4']],
+			'Nette\Application\UI\Control' => [['application.1', 'application.2', 'application.4']],
+			'Nette\Application\UI\Component' => [['application.1', 'application.2', 'application.4']],
+			'Nette\ComponentModel\Container' => [['application.1', 'application.2', 'application.4']],
+			'Nette\ComponentModel\Component' => [['application.1', 'application.2', 'application.4']],
 			'Nette\Application\IPresenter' => [
 				[
 					'application.1',
@@ -52,37 +58,34 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 					'application.4',
 					'application.5',
 					'application.6',
-					'application.7',
 				],
 			],
-			'ArrayAccess' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\Application\UI\IStatePersistent' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\Application\UI\ISignalReceiver' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\ComponentModel\IComponent' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\ComponentModel\IContainer' => [['application.1', 'application.2', 'application.4', 'application.5']],
-			'Nette\Application\UI\IRenderable' => [['application.1', 'application.2', 'application.4', 'application.5']],
+			'ArrayAccess' => [['application.1', 'application.2', 'application.4']],
+			'Nette\Application\UI\IStatePersistent' => [['application.1', 'application.2', 'application.4']],
+			'Nette\Application\UI\ISignalReceiver' => [['application.1', 'application.2', 'application.4']],
+			'Nette\ComponentModel\IComponent' => [['application.1', 'application.2', 'application.4']],
+			'Nette\ComponentModel\IContainer' => [['application.1', 'application.2', 'application.4']],
+			'Nette\Application\UI\IRenderable' => [['application.1', 'application.2', 'application.4']],
 			'App\Presenters\BookPresenter' => [1 => ['application.1']],
-			'App\Presenters\BasePresenter' => [1 => ['application.2', 'application.4', 'application.5']],
+			'App\Presenters\BasePresenter' => [1 => ['application.2', 'application.4']],
 			'App\Presenters\Error4xxPresenter' => [1 => ['application.2']],
 			'App\Presenters\ErrorPresenter' => [1 => ['application.3']],
-			'App\Presenters\HomepagePresenter' => [1 => ['application.4']],
-			'App\Presenters\UserPresenter' => [1 => ['application.5']],
-			'NetteModule\ErrorPresenter' => [1 => ['application.6']],
-			'NetteModule\MicroPresenter' => [1 => ['application.7']],
+			'App\Presenters\UserPresenter' => [1 => ['application.4']],
+			'NetteModule\ErrorPresenter' => [1 => ['application.5']],
+			'NetteModule\MicroPresenter' => [1 => ['application.6']],
 			'Nette\DI\Container' => [1 => ['container']],
 		],
 		'services' => [
-			'24_App_Forms_FormFactory' => 'App\Forms\FormFactory',
-			'25_App_Model_BooksModel' => 'App\Model\BooksModel',
-			'26_App_Model_GenresModel' => 'App\Model\GenresModel',
-			'27_App_Model_UsersModel' => 'App\Model\UsersModel',
+			'29_App_Forms_FormFactory' => 'App\Forms\FormFactory',
+			'30_App_Model_BooksModel' => 'App\Model\BooksModel',
+			'31_App_Model_GenresModel' => 'App\Model\GenresModel',
+			'32_App_Model_UsersModel' => 'App\Model\UsersModel',
 			'application.1' => 'App\Presenters\BookPresenter',
 			'application.2' => 'App\Presenters\Error4xxPresenter',
 			'application.3' => 'App\Presenters\ErrorPresenter',
-			'application.4' => 'App\Presenters\HomepagePresenter',
-			'application.5' => 'App\Presenters\UserPresenter',
-			'application.6' => 'NetteModule\ErrorPresenter',
-			'application.7' => 'NetteModule\MicroPresenter',
+			'application.4' => 'App\Presenters\UserPresenter',
+			'application.5' => 'NetteModule\ErrorPresenter',
+			'application.6' => 'NetteModule\MicroPresenter',
 			'application.application' => 'Nette\Application\Application',
 			'application.linkGenerator' => 'Nette\Application\LinkGenerator',
 			'application.presenterFactory' => 'Nette\Application\IPresenterFactory',
@@ -93,6 +96,11 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 			'database.default.context' => 'Nette\Database\Context',
 			'database.default.conventions' => 'Nette\Database\Conventions\DiscoveredConventions',
 			'database.default.structure' => 'Nette\Database\Structure',
+			'facebook.apiClient' => 'Kdyby\Facebook\ApiClient',
+			'facebook.client' => 'Kdyby\Facebook\Facebook',
+			'facebook.config' => 'Kdyby\Facebook\Configuration',
+			'facebook.panel' => 'Kdyby\Facebook\Diagnostics\Panel',
+			'facebook.session' => 'Kdyby\Facebook\SessionStorage',
 			'http.context' => 'Nette\Http\Context',
 			'http.request' => 'Nette\Http\Request',
 			'http.requestFactory' => 'Nette\Http\RequestFactory',
@@ -117,16 +125,19 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 				'application.4' => true,
 				'application.5' => true,
 				'application.6' => true,
-				'application.7' => true,
+				'facebook.apiClient' => false,
+				'facebook.client' => false,
+				'facebook.config' => false,
+				'facebook.panel' => false,
+				'facebook.session' => false,
 			],
 			'nette.presenter' => [
 				'application.1' => 'App\Presenters\BookPresenter',
 				'application.2' => 'App\Presenters\Error4xxPresenter',
 				'application.3' => 'App\Presenters\ErrorPresenter',
-				'application.4' => 'App\Presenters\HomepagePresenter',
-				'application.5' => 'App\Presenters\UserPresenter',
-				'application.6' => 'NetteModule\ErrorPresenter',
-				'application.7' => 'NetteModule\MicroPresenter',
+				'application.4' => 'App\Presenters\UserPresenter',
+				'application.5' => 'NetteModule\ErrorPresenter',
+				'application.6' => 'NetteModule\MicroPresenter',
 			],
 		],
 		'aliases' => [
@@ -171,28 +182,28 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 	}
 
 
-	public function createService__24_App_Forms_FormFactory(): App\Forms\FormFactory
+	public function createService__29_App_Forms_FormFactory(): App\Forms\FormFactory
 	{
 		$service = new App\Forms\FormFactory;
 		return $service;
 	}
 
 
-	public function createService__25_App_Model_BooksModel(): App\Model\BooksModel
+	public function createService__30_App_Model_BooksModel(): App\Model\BooksModel
 	{
 		$service = new App\Model\BooksModel($this->getService('pdo'));
 		return $service;
 	}
 
 
-	public function createService__26_App_Model_GenresModel(): App\Model\GenresModel
+	public function createService__31_App_Model_GenresModel(): App\Model\GenresModel
 	{
 		$service = new App\Model\GenresModel($this->getService('pdo'));
 		return $service;
 	}
 
 
-	public function createService__27_App_Model_UsersModel(): App\Model\UsersModel
+	public function createService__32_App_Model_UsersModel(): App\Model\UsersModel
 	{
 		$service = new App\Model\UsersModel($this->getService('pdo'));
 		return $service;
@@ -202,12 +213,18 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 	public function createServiceApplication__1(): App\Presenters\BookPresenter
 	{
 		$service = new App\Presenters\BookPresenter;
-		$service->injectPrimary($this, $this->getService('application.presenterFactory'),
-			$this->getService('routing.router'), $this->getService('http.request'),
-			$this->getService('http.response'), $this->getService('session.session'),
-			$this->getService('security.user'), $this->getService('latte.templateFactory'));
-		$service->injectBooksModel($this->getService('25_App_Model_BooksModel'));
-		$service->injectGenresModel($this->getService('26_App_Model_GenresModel'));
+		$service->injectPrimary(
+			$this,
+			$this->getService('application.presenterFactory'),
+			$this->getService('routing.router'),
+			$this->getService('http.request'),
+			$this->getService('http.response'),
+			$this->getService('session.session'),
+			$this->getService('security.user'),
+			$this->getService('latte.templateFactory')
+		);
+		$service->injectBooksModel($this->getService('30_App_Model_BooksModel'));
+		$service->injectGenresModel($this->getService('31_App_Model_GenresModel'));
 		$service->invalidLinkMode = 5;
 		return $service;
 	}
@@ -216,10 +233,16 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 	public function createServiceApplication__2(): App\Presenters\Error4xxPresenter
 	{
 		$service = new App\Presenters\Error4xxPresenter;
-		$service->injectPrimary($this, $this->getService('application.presenterFactory'),
-			$this->getService('routing.router'), $this->getService('http.request'),
-			$this->getService('http.response'), $this->getService('session.session'),
-			$this->getService('security.user'), $this->getService('latte.templateFactory'));
+		$service->injectPrimary(
+			$this,
+			$this->getService('application.presenterFactory'),
+			$this->getService('routing.router'),
+			$this->getService('http.request'),
+			$this->getService('http.response'),
+			$this->getService('session.session'),
+			$this->getService('security.user'),
+			$this->getService('latte.templateFactory')
+		);
 		$service->invalidLinkMode = 5;
 		return $service;
 	}
@@ -232,71 +255,78 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 	}
 
 
-	public function createServiceApplication__4(): App\Presenters\HomepagePresenter
-	{
-		$service = new App\Presenters\HomepagePresenter;
-		$service->injectPrimary($this, $this->getService('application.presenterFactory'),
-			$this->getService('routing.router'), $this->getService('http.request'),
-			$this->getService('http.response'), $this->getService('session.session'),
-			$this->getService('security.user'), $this->getService('latte.templateFactory'));
-		$service->invalidLinkMode = 5;
-		return $service;
-	}
-
-
-	public function createServiceApplication__5(): App\Presenters\UserPresenter
+	public function createServiceApplication__4(): App\Presenters\UserPresenter
 	{
 		$service = new App\Presenters\UserPresenter;
-		$service->injectPrimary($this, $this->getService('application.presenterFactory'),
-			$this->getService('routing.router'), $this->getService('http.request'),
-			$this->getService('http.response'), $this->getService('session.session'),
-			$this->getService('security.user'), $this->getService('latte.templateFactory'));
-		$service->injectUsersModel($this->getService('27_App_Model_UsersModel'));
+		$service->injectPrimary(
+			$this,
+			$this->getService('application.presenterFactory'),
+			$this->getService('routing.router'),
+			$this->getService('http.request'),
+			$this->getService('http.response'),
+			$this->getService('session.session'),
+			$this->getService('security.user'),
+			$this->getService('latte.templateFactory')
+		);
+		$service->injectFacebook($this->getService('facebook.client'));
+		$service->injectUsersModel($this->getService('32_App_Model_UsersModel'));
 		$service->invalidLinkMode = 5;
 		return $service;
 	}
 
 
-	public function createServiceApplication__6(): NetteModule\ErrorPresenter
+	public function createServiceApplication__5(): NetteModule\ErrorPresenter
 	{
 		$service = new NetteModule\ErrorPresenter($this->getService('tracy.logger'));
 		return $service;
 	}
 
 
-	public function createServiceApplication__7(): NetteModule\MicroPresenter
+	public function createServiceApplication__6(): NetteModule\MicroPresenter
 	{
-		$service = new NetteModule\MicroPresenter($this, $this->getService('http.request'),
-			$this->getService('routing.router'));
+		$service = new NetteModule\MicroPresenter($this, $this->getService('http.request'), $this->getService('routing.router'));
 		return $service;
 	}
 
 
 	public function createServiceApplication__application(): Nette\Application\Application
 	{
-		$service = new Nette\Application\Application($this->getService('application.presenterFactory'),
-			$this->getService('routing.router'), $this->getService('http.request'),
-			$this->getService('http.response'));
+		$service = new Nette\Application\Application(
+			$this->getService('application.presenterFactory'),
+			$this->getService('routing.router'),
+			$this->getService('http.request'),
+			$this->getService('http.response')
+		);
 		$service->catchExceptions = false;
 		$service->errorPresenter = 'Error';
 		Nette\Bridges\ApplicationTracy\RoutingPanel::initializePanel($service);
-		$this->getService('tracy.bar')->addPanel(new Nette\Bridges\ApplicationTracy\RoutingPanel($this->getService('routing.router'),
-			$this->getService('http.request'), $this->getService('application.presenterFactory')));
+		$this->getService('tracy.bar')->addPanel(new Nette\Bridges\ApplicationTracy\RoutingPanel(
+			$this->getService('routing.router'),
+			$this->getService('http.request'),
+			$this->getService('application.presenterFactory')
+		));
 		return $service;
 	}
 
 
 	public function createServiceApplication__linkGenerator(): Nette\Application\LinkGenerator
 	{
-		$service = new Nette\Application\LinkGenerator($this->getService('routing.router'),
-			$this->getService('http.request')->getUrl(), $this->getService('application.presenterFactory'));
+		$service = new Nette\Application\LinkGenerator(
+			$this->getService('routing.router'),
+			$this->getService('http.request')->getUrl(),
+			$this->getService('application.presenterFactory')
+		);
 		return $service;
 	}
 
 
 	public function createServiceApplication__presenterFactory(): Nette\Application\IPresenterFactory
 	{
-		$service = new Nette\Application\PresenterFactory(new Nette\Bridges\ApplicationDI\PresenterFactoryCallback($this, 5, 'C:\xampp\htdocs\bookhero\app/../temp/cache/Nette%5CBridges%5CApplicationDI%5CApplicationExtension'));
+		$service = new Nette\Application\PresenterFactory(new Nette\Bridges\ApplicationDI\PresenterFactoryCallback(
+			$this,
+			5,
+			'C:\xampp\htdocs\bookhero\app/../temp/cache/Nette%5CBridges%5CApplicationDI%5CApplicationExtension'
+		));
 		$service->setMapping(['*' => 'App\*Module\Presenters\*Presenter']);
 		return $service;
 	}
@@ -311,8 +341,7 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 
 	public function createServiceCache__storage(): Nette\Caching\IStorage
 	{
-		$service = new Nette\Caching\Storages\FileStorage('C:\xampp\htdocs\bookhero\app/../temp/cache',
-			$this->getService('cache.journal'));
+		$service = new Nette\Caching\Storages\FileStorage('C:\xampp\htdocs\bookhero\app/../temp/cache', $this->getService('cache.journal'));
 		return $service;
 	}
 
@@ -325,8 +354,7 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 
 	public function createServiceDatabase__default__connection(): Nette\Database\Connection
 	{
-		$service = new Nette\Database\Connection('mysql:host=127.0.0.1;dbname=app', null, null,
-			['lazy' => true]);
+		$service = new Nette\Database\Connection('mysql:host=127.0.0.1;dbname=app', null, null, ['lazy' => true]);
 		$this->getService('tracy.blueScreen')->addPanel('Nette\Bridges\DatabaseTracy\ConnectionPanel::renderException');
 		Nette\Database\Helpers::createDebugPanel($service, true, 'default');
 		return $service;
@@ -335,9 +363,12 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 
 	public function createServiceDatabase__default__context(): Nette\Database\Context
 	{
-		$service = new Nette\Database\Context($this->getService('database.default.connection'),
-			$this->getService('database.default.structure'), $this->getService('database.default.conventions'),
-			$this->getService('cache.storage'));
+		$service = new Nette\Database\Context(
+			$this->getService('database.default.connection'),
+			$this->getService('database.default.structure'),
+			$this->getService('database.default.conventions'),
+			$this->getService('cache.storage')
+		);
 		return $service;
 	}
 
@@ -351,8 +382,63 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 
 	public function createServiceDatabase__default__structure(): Nette\Database\Structure
 	{
-		$service = new Nette\Database\Structure($this->getService('database.default.connection'),
-			$this->getService('cache.storage'));
+		$service = new Nette\Database\Structure($this->getService('database.default.connection'), $this->getService('cache.storage'));
+		return $service;
+	}
+
+
+	public function createServiceFacebook__apiClient(): Kdyby\Facebook\ApiClient
+	{
+		$service = new Kdyby\Facebook\Api\CurlClient;
+		$service->curlOptions = [
+			78 => 10,
+			13 => 60,
+			10023 => ['User-Agent: kdyby-facebook-1.1'],
+			2 => true,
+			42 => true,
+			19913 => true,
+		];;
+		$this->getService('facebook.panel')->register($service);
+		return $service;
+	}
+
+
+	public function createServiceFacebook__client(): Kdyby\Facebook\Facebook
+	{
+		$service = new Kdyby\Facebook\Facebook(
+			$this->getService('facebook.config'),
+			$this->getService('facebook.session'),
+			$this->getService('facebook.apiClient'),
+			$this->getService('http.request'),
+			$this->getService('http.response')
+		);
+		return $service;
+	}
+
+
+	public function createServiceFacebook__config(): Kdyby\Facebook\Configuration
+	{
+		$service = new Kdyby\Facebook\Configuration('185766635309072	', '6280ea8c791324f7ac474b5a5aaf0366');
+		$service->verifyApiCalls = true;
+		$service->fileUploadSupport = false;
+		$service->trustForwarded = false;
+		$service->permissions = ['public_profile', 'email'];
+		$service->canvasBaseUrl = null;
+		$service->graphVersion = 'v2.3';
+		return $service;
+	}
+
+
+	public function createServiceFacebook__panel(): Kdyby\Facebook\Diagnostics\Panel
+	{
+		$service = new Kdyby\Facebook\Diagnostics\Panel;
+		return $service;
+	}
+
+
+	public function createServiceFacebook__session(): Kdyby\Facebook\SessionStorage
+	{
+		$service = new Kdyby\Facebook\SessionStorage($this->getService('session.session'), $this->getService('facebook.config'));
 		return $service;
 	}
 
@@ -414,9 +500,13 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 
 	public function createServiceLatte__templateFactory(): Nette\Application\UI\ITemplateFactory
 	{
-		$service = new Nette\Bridges\ApplicationLatte\TemplateFactory($this->getService('latte.latteFactory'),
-			$this->getService('http.request'), $this->getService('security.user'),
-			$this->getService('cache.storage'), null);
+		$service = new Nette\Bridges\ApplicationLatte\TemplateFactory(
+			$this->getService('latte.latteFactory'),
+			$this->getService('http.request'),
+			$this->getService('security.user'),
+			$this->getService('cache.storage'),
+			null
+		);
 		return $service;
 	}
 
@@ -444,8 +534,9 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 
 	public function createServiceSecurity__user(): Nette\Security\User
 	{
-		$service = new Nette\Security\User($this->getService('security.userStorage'), $this->getService('27_App_Model_UsersModel'));
+		$service = new Nette\Security\User($this->getService('security.userStorage'), $this->getService('32_App_Model_UsersModel'));
 		$this->getService('tracy.bar')->addPanel(new Nette\Bridges\SecurityTracy\UserPanel($service));
+		$sl = $this; $service->onLoggedOut[] = function () use ($sl) { $sl->getService('facebook.session')->clearAll(); };
 		return $service;
 	}
 

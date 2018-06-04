@@ -6,6 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Kdyby\\Facebook\\Exception' => $vendorDir . '/kdyby/facebook/src/Kdyby/Facebook/exceptions.php',
+    'Kdyby\\Facebook\\FacebookApiException' => $vendorDir . '/kdyby/facebook/src/Kdyby/Facebook/exceptions.php',
+    'Kdyby\\Facebook\\InvalidArgumentException' => $vendorDir . '/kdyby/facebook/src/Kdyby/Facebook/exceptions.php',
     'Latte\\CompileException' => $vendorDir . '/latte/latte/src/Latte/exceptions.php',
     'Latte\\Compiler' => $vendorDir . '/latte/latte/src/Latte/Compiler/Compiler.php',
     'Latte\\Engine' => $vendorDir . '/latte/latte/src/Latte/Engine.php',

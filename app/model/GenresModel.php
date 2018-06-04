@@ -21,6 +21,50 @@ class GenresModel
     }
 
 
+
+
+    public function findGenre($genre)
+    {
+    
+    $sql = 'SELECT * FROM genres ';
+
+    if ($genre[1] == "id") {
+        $sql .= "where id = ?"; 
+    }
+    else 
+    {
+        $sql .= "where name = ?";
+    }
+
+
+
+    $query=$this->pdo->prepare($sql);
+
+    $query->execute([$genre[0]]);
+    return $query->fetchObject(__NAMESPACE__ . '\Entities\Genre');
+    }
+
+
+    public function deleteGenre($id)
+    {
+        $sql = 'DELETE FROM user_books WHERE genreId = ?';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$id]);
+
+        $sql   = 'DELETE FROM genres WHERE id = ?';
+        $query = $this->pdo->prepare($sql);
+        $result = $query->execute([$id]);
+        return $result;
+    }
+    public function addGenre($genre)
+    {
+        $sql   = 'INSERT INTO genres (name) VALUES (?)';
+        $query = $this->pdo->prepare($sql);
+        $result = $query->execute([$genre->name]);
+        return $result;
+    }
+
+
     /**
      * ArticlesModel constructor
      * @param PDO $pdo

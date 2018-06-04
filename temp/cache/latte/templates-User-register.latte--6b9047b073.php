@@ -45,7 +45,10 @@ class Template6b9047b073 extends Latte\Runtime\Template
 		$_tmp->render();
 ?>
 
-  <p>Máte už svůj účet? <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:login")) ?>">Přihlašte se...</a></p><?php
+  <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("fbLogin-open!")) ?>"><img src="<?php
+		echo LR\Filters::escapeHtmlAttr(LR\Filters::safeUrl($basePath.'/images/icons/fb_login.png')) /* line 6 */ ?>" alt="Facebook login" height="50" width="170"></a> 
+
+  <p class="marToop">Máte už svůj účet? <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:login")) ?>">Přihlašte se...</a></p><?php
 	}
 
 

@@ -21,8 +21,15 @@ database:
 	options:
 		lazy: yes
 
+extensions:
+	facebook: Kdyby\Facebook\DI\FacebookExtension
 
 
+facebook:
+	appId: "185766635309072	"
+	appSecret: "6280ea8c791324f7ac474b5a5aaf0366"
+	permissions: [public_profile, email] # theese are the default read permissions, you might need to
+	graphVersion: v2.3
 
 services:
 	- App\Model\BooksModel 

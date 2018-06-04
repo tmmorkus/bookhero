@@ -36,7 +36,7 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 		extract($_args);
 ?>
 <div class = "container">
-	<h2><?php echo LR\Filters::escapeHtmlText($book->name) /* line 3 */ ?></h2>
+	<h1><?php echo LR\Filters::escapeHtmlText($book->name) /* line 3 */ ?></h1>
 	<div class = "row">
 
 		<div class = "col-lg-2 col-md-3 col-sm-4">
@@ -45,28 +45,45 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 		</div>
 		<div class = "col-lg-10 col-md-9 col-sm-8">
 		<table>
+<?php
+		if ($user->isInRole('admin') == 1) {
+?>
+          <td> 
+            <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:edit", ['id' => $book->id])) ?>">Editovat</a>
+           </td>
+<?php
+		}
+?>
+
 			<tr>
 				<td class="font-weight-bold">Autor: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($book->author) /* line 13 */ ?></td>
+				<td><?php echo LR\Filters::escapeHtmlText($book->author) /* line 19 */ ?></td>
 			<tr>
 			<tr>
 				<td class="font-weight-bold">Stran: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($book->pages) /* line 17 */ ?></td>
+				<td><?php echo LR\Filters::escapeHtmlText($book->pages) /* line 23 */ ?></td>
 			<tr>
 			<tr>
 				<td class="font-weight-bold">Žánr: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($book->author) /* line 21 */ ?></td>
+				<td><?php echo LR\Filters::escapeHtmlText($genres) /* line 27 */ ?></td>
 			<tr>
 			<tr>
 				<td class="font-weight-bold">ISBN: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($book->isbn) /* line 25 */ ?></td>
+				<td><?php echo LR\Filters::escapeHtmlText($book->isbn) /* line 31 */ ?></td>
 			<tr>
 <?php
 		if ($book->rating >= 0) {
 ?>
 			<tr>
 				<td class="font-weight-bold">Hodnocení: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($book->rating) /* line 30 */ ?>%</td>
+				<td><?php
+			if (empty($book->rating)) {
+				?>0%<?php
+			}
+			else {
+				echo LR\Filters::escapeHtmlText($book->rating) /* line 36 */ ?>%<?php
+			}
+?></td>
 			<tr>	
 <?php
 		}
@@ -112,12 +129,27 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 			}
 ?>; font-size: 24px;"></i></a></td>
   			<tr>
+			<tr>	  
+			    <td>	
+               	  <a onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBookFromUser!", ['bookId' => $book->id])) ?>">Odebrat ze seznamu</a>	
+ 				</td>	
+ 			<tr>
+<?php
+		}
+		elseif ($user->isLoggedIn()) {
+?>
+ 			<tr>
+
+ 			   <td>	
+				<a  href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("addBookToUser!", ['bookId' => $book->id])) ?>">Přidat do seznamu</a>
+			   	</td>
+			<tr>  
 <?php
 		}
 ?>
 		</table>
 	  </div>
-     <div class = "col-12">Pokud by se pro stejný účel použil smysluplný text, bylo by těžké hodnotit pouze vzhled, aniž by se pozorovatel nechal svést ke čtení obsahu. Pokud by byl naopak použit nesmyslný, ale pravidelný text (např. opakování „asdf asdf asdf…“), oko by při posuzování vzhledu bylo vyrušováno pravidelnou strukturou textu, která se od běžného textu liší. Text lorem ipsum na první pohled připomíná běžný text, slova jsou různě dlouhá, frekvence písmen je podobná běžné řeči, interpunkce vypadá přirozeně atd.</div>
+     <div class = "col-12"> <?php echo LR\Filters::escapeHtmlText($book->description) /* line 61 */ ?> </div>
 		
 	</div>
 </div>

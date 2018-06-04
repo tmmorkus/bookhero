@@ -26,8 +26,8 @@ class Template4a9712f50c extends Latte\Runtime\Template
 	function prepare()
 	{
 		extract($this->params);
-		if (isset($this->params['genre'])) trigger_error('Variable $genre overwritten in foreach on line 7');
-		if (isset($this->params['book'])) trigger_error('Variable $book overwritten in foreach on line 14');
+		if (isset($this->params['genre'])) trigger_error('Variable $genre overwritten in foreach on line 8');
+		if (isset($this->params['book'])) trigger_error('Variable $book overwritten in foreach on line 15');
 		Nette\Bridges\ApplicationLatte\UIRuntime::initialize($this, $this->parentName, $this->blocks);
 		
 	}
@@ -37,6 +37,7 @@ class Template4a9712f50c extends Latte\Runtime\Template
 	{
 		extract($_args);
 ?>
+<h1>Uživatelský seznam</h1>
 <div class="container">
   <label for="genreSelect">Filtr dle žánru: </label> 
   <select class ="marBot custom-select" name="forma" onchange="location = this.value;">
@@ -44,7 +45,7 @@ class Template4a9712f50c extends Latte\Runtime\Template
 		if (empty($filter)) {
 			?>selected<?php
 		}
-		?> value= "<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:UserBooks")) ?>"></option>
+		?> value= "<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:UserBooks")) ?>">vypnout filtr</option>
 
 <?php
 		$iterations = 0;
@@ -54,7 +55,7 @@ class Template4a9712f50c extends Latte\Runtime\Template
 				?>selected<?php
 			}
 			?>  value= "<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:UserBooks", ['filter'=>$genre->id])) ?>" > <?php
-			echo LR\Filters::escapeHtmlText($genre->name) /* line 8 */ ?> </option>
+			echo LR\Filters::escapeHtmlText($genre->name) /* line 9 */ ?> </option>
 <?php
 			$iterations++;
 		}
@@ -73,9 +74,9 @@ class Template4a9712f50c extends Latte\Runtime\Template
    <table class="marBot">
    	<tbody>
    	 <tr><td><a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:show", ['id'=>$book->id])) ?>"> <?php
-				echo LR\Filters::escapeHtmlText($book->name) /* line 18 */ ?> </a></tr></td>
-   	 <tr><td><img src="<?php echo LR\Filters::escapeHtmlAttr(LR\Filters::safeUrl($basePath.'/'.$book->img)) /* line 19 */ ?>" alt="<?php
-				echo LR\Filters::escapeHtmlAttr($book->name) /* line 19 */ ?> přebal" height="160" width="100"></tr></td>
+				echo LR\Filters::escapeHtmlText($book->name) /* line 19 */ ?> </a></tr></td>
+   	 <tr><td><img src="<?php echo LR\Filters::escapeHtmlAttr(LR\Filters::safeUrl($basePath.'/'.$book->img)) /* line 20 */ ?>" alt="<?php
+				echo LR\Filters::escapeHtmlAttr($book->name) /* line 20 */ ?> přebal" height="160" width="100"></tr></td>
    	 <tr ><td> 
           <a  href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBookFromUser!", ['bookId' => $book->id])) ?>">Odebrat ze seznamu</a>
      </tr></td>
@@ -93,23 +94,23 @@ class Template4a9712f50c extends Latte\Runtime\Template
 <div class="pagination text-center col-sm-12">
 <?php
 			if (!$paginator->isFirst()) {
-				?>        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("list", [1, 'orderBy'=>$orderPrev,'filter'=>$filter,'order'=>$order, 'orderPrev'=>$orderPrev])) ?>">První</a>
+				?>        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("list", [1, 'filter'=>$filter])) ?>">První</a>
         &nbsp;|&nbsp;
-        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("list", ['page' => $paginator->page-1, 'orderBy'=>$orderPrev,'filter'=>$filter])) ?>">Předchozí</a>
+        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("list", ['page' => $paginator->page-1, 'filter'=>$filter])) ?>">Předchozí</a>
         &nbsp;|&nbsp;
 <?php
 			}
 ?>
 
-    Stránka <?php echo LR\Filters::escapeHtmlText($paginator->page) /* line 39 */ ?> z <?php echo LR\Filters::escapeHtmlText($paginator->pageCount) /* line 39 */ ?>
+    Stránka <?php echo LR\Filters::escapeHtmlText($paginator->page) /* line 40 */ ?> z <?php echo LR\Filters::escapeHtmlText($paginator->pageCount) /* line 40 */ ?>
 
 <?php
 			if (!$paginator->isLast()) {
 ?>
         &nbsp;|&nbsp;
-        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("list", ['page' => $paginator->page+1, 'orderBy'=>$orderPrev,'filter'=>$filter])) ?>">Další</a>
+        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("list", ['page' => $paginator->page+1,'filter'=>$filter])) ?>">Další</a>
         &nbsp;|&nbsp;
-        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("list", ['page' => $paginator->pageCount,'orderBy'=>$orderPrev,'filter'=>$filter])) ?>">Poslední</a>
+        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("list", ['page' => $paginator->pageCount,'filter'=>$filter])) ?>">Poslední</a>
 <?php
 			}
 ?>

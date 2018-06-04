@@ -34,20 +34,30 @@ class BooksModel
 
     }
 
+
+
     public function findBook($id,$userId)
     {
         $param = [];
         $param[]=$id;
         if ($userId > 0) {
              
-            $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/COUNT(user_books.userRating)) 
-* 100)) as rating, ub.userRating as userRating from books join user_books ub on ub.bookId = books.id  left join  user_books on user_books.bookId = books.id where books.id = ? and ub.userId = ?';
+            $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/
+            COUNT(user_books.userRating)) * 100)) as rating, ub.userRating as userRating,
+            group_concat(book_genres.genreId) as genres 
+            from books join user_books ub on ub.bookId = books.id  
+            left join  user_books on user_books.bookId = books.id 
+            join book_genres on books.id = book_genres.bookId
+            where books.id = ? and ub.userId = ? ';
             $param[] = $userId;  
         }
         else
         {
-           $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/COUNT(user_books.userRating)) 
-* 100)) as rating from books left join user_books on user_books.bookId = books.id where books.id = ?';
+           $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/COUNT(user_books.userRating)) * 100)) as rating,
+           group_concat(book_genres.genreId) as genres from books 
+           left join user_books on user_books.bookId = books.id 
+           join book_genres on books.id = book_genres.bookId
+           where books.id = ? ';
            
         }
         
@@ -57,11 +67,24 @@ class BooksModel
         return $query->fetchObject(__NAMESPACE__ . '\Entities\Book');
     }
 
+    public function findByName($bookName)
+    {
+
+
+        $sql = 'SELECT books.* FROM books where books.name = ?'; 
+    
+    
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$bookName]);
+        return $query->fetchObject(__NAMESPACE__ . '\Entities\Book');
+    }
+
     public function findBooksCount($filter, $userId)
     {
         
         $params = []; 
-        $sql = 'SELECT COUNT(*) FROM books ';
+        $sql = 'SELECT COUNT(books.id)  FROM books 
+        join book_genres on book_genres.bookId = books.id ';
 
         
        if (!empty($userId)) {
@@ -72,20 +95,32 @@ class BooksModel
         if (!empty($filter)) {
           if (!empty($userId))
           {
-            $sql .= 'and genreId = ?';
+            $sql .= 'and book_genres.genreId = ?';
           } 
           else
           {
-            $sql .= 'where genreId = ?';
+            $sql .= 'where book_genres.genreId = ?';
           }
           
           $params[] = $filter;
         }
-   
+        
         $query = $this->pdo->prepare($sql); 
        $query->execute($params);
 
        return $query->fetchColumn();
+
+    }
+
+    public function autocomplete($term)
+    {
+        $term .= '%';
+        $sql = "SELECT name as value, name as lalbel, id  FROM books WHERE name LIKE ? limit 0,7"; 
+        $query = $this->pdo->prepare($sql); 
+        $query->execute([$term]);
+        $result = [];
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        return $result; 
 
     }
 
@@ -94,7 +129,10 @@ class BooksModel
        
   
         $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/COUNT(user_books.userRating)) 
-        * 100)) as rating from books left join user_books on user_books.bookId = books.id ';
+        * 100)) as rating,
+        group_concat(book_genres.genreId) as genres from books 
+        left join user_books on user_books.bookId = books.id
+        join book_genres on books.id = book_genres.bookId ';
        
         if (!empty($userId))
         {
@@ -102,17 +140,14 @@ class BooksModel
             $sql .= 'where ub.userId = :userId ';
          }      
 
-
-
-
         if (!empty($filter)) {
             if (!empty($userId))
             {
-                $sql .= 'and books.genreId = :genreId ';
+                $sql .= 'and book_genres.genreId = :genreId ';
             }
             else 
             {
-               $sql .= 'WHERE books.genreId = :genreId '; 
+               $sql .= 'WHERE book_genres.genreId = :genreId '; 
             }
             
         }
@@ -140,6 +175,8 @@ class BooksModel
 
 
     }
+    
+
 
     public function addBookToUser($bookId,$userId)
     {
@@ -166,15 +203,63 @@ class BooksModel
         return $result; 
     }
 
+    public function deleteBook ($bookId)
+    {
+        $sql = 'DELETE FROM user_books WHERE bookId = ?';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$bookId]);
+
+        $sql = 'DELETE FROM book_genres WHERE bookId = ?';
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$bookId]);
+
+        $sql = 'DELETE FROM books WHERE id = ?';
+        $query = $this->pdo->prepare($sql);
+        $result = $query->execute([$bookId]);
+        return $result; 
+    }
+
     public function addBook(Book $book)
     {
+  
 
-        $sql   = 'INSERT INTO books (name,author,year,isbn,pages,description, genreId, img) VALUES (?,?,?,?,?,?,?,?)';
+
+
+        $sql   = 'INSERT INTO books (name,author,year,isbn,pages,description,img) VALUES (?,?,?,?,?,?,?)';
         $query = $this->pdo->prepare($sql);
-        $result = $query->execute([$book->name,$book->author,$book->year,$book->isbn,$book->pages,$book->description,$book->genre, $book->img]);
-
+        $result = $query->execute([$book->name,$book->author,$book->year,$book->isbn,$book->pages,$book->description,$book->img]);
+        $lastId  = $this->pdo->lastInsertId();
+        foreach ($book->genres as $genreId) {
+            
+            $sql   = 'INSERT INTO book_genres (bookId, genreId) VALUES (?,?)';
+            $query = $this->pdo->prepare($sql);
+            $result = $query->execute([$lastId,$genreId]);
+        }
+      
         return $result;
 
+    }
+
+    public function editBook(Book $book)
+    {
+        $sql   = "DELETE FROM book_genres WHERE bookId = ?";
+             
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$book->id]); 
+
+        foreach ($book->genres as $genre) {
+        $sql   = "INSERT INTO book_genres (bookId, genreId) VALUES (?,?)";
+             
+        $query = $this->pdo->prepare($sql);
+        $query->execute([$book->id, $genre]);
+        }
+
+         $sql   = "UPDATE books SET name = ? , author = ? , year = ? , isbn = ? , pages = ? , description = ? WHERE name = ?";
+             
+        $query = $this->pdo->prepare($sql);
+        $result = $query->execute([$book->name,$book->author,$book->year,$book->isbn,$book->pages,$book->description, $book->name]);
+   
+        return $result;
     }
 
 

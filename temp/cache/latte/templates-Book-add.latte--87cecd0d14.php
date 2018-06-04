@@ -35,7 +35,7 @@ class Template87cecd0d14 extends Latte\Runtime\Template
 	{
 		extract($_args);
 ?>
-
+<h1>Přidat knihu</h1>
 <?php
 		/* line 3 */ $_tmp = $this->global->uiControl->getComponent("addBookForm");
 		if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(null, false);

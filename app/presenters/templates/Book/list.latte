@@ -1,8 +1,8 @@
 {block content}
-  
+  <h1>Seznam knih</h1>
   <label for="genreSelect">Filtr dle žánru: </label> 
   <select id = "genreSelect" class="custom-select" name="forma" onchange="location = this.value;">
-    <option {if empty($filter)}selected{/if}  value= "{link Book:list page=>1,orderBy=>name, order=>$order, orderPrev=>$orderPrev}" > </option>
+    <option {if empty($filter)}selected{/if}  value= "{link Book:list page=>1,orderBy=>name, order=>$order, orderPrev=>$orderPrev}" >vypnout filtr</option>
 
    {foreach $genres as $genre}
     <option {if $genre->id == $filter}selected{/if}  value= "{link Book:list page=>1,filter=>$genre->id,orderBy=>name, order=>$order, orderPrev=>$orderPrev}" > {$genre->name} </option>
@@ -22,7 +22,13 @@
       <th><a href="{link Book:list orderBy=>year, order=>$order, orderPrev=>$orderPrev}">Rok vydání</a></th>
       <th>ISBN</th>
       <th><a href="{link Book:list orderBy=>rating, order=>$order, orderPrev=>$orderPrev}">Hodnocení</a></th>
-      <th> </th>
+      {if $user->isLoggedIn()}
+      <th></th>
+      {/if}
+      {if $user->isInRole('admin') == 1}
+      <th></th>
+      <th></th>
+      {/if}
     </tr>
   </thead>
    <tbody>
@@ -32,7 +38,7 @@
       <td>{$book->author}</td>
       <td>{$book->year}</td>
       <td>{$book->isbn}</td>
-      <td>{if empty($book->rating)} {else}{$book->rating}%{/if}</td>
+      <td>{if empty($book->rating)}0%{else}{$book->rating}%{/if}</td>
      {if $user->isLoggedIn()}
       <td>
       {var $change = false} 
@@ -44,11 +50,19 @@
       {if $change == false}
           <a n:href="addBookToUser!,bookId => $book->id" >Přidat do seznamu</a>
       {else}
-          <a n:href="deleteBookFromUser!,bookId => $book->id" >Odebrat ze seznamu</a>
+          <a n:href="deleteBookFromUser!,bookId => $book->id" onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')">Odebrat ze seznamu</a>
       {/if}
       </td>
      {/if}
-     </tr>
+     {if $user->isInRole('admin') == 1}
+       <td> 
+         <a n:href="Book:edit,id => $book->id">Editovat</a>
+       </td>
+       <td> 
+        <a n:href="deleteBook!,bookId => $book->id" onclick="return confirm('Opravdu chcete knihu smazat?')">Smazat</a>
+       </td>
+     {/if}
+       </tr>
     {/foreach}
     </tbody>  
     </table>

@@ -1,8 +1,9 @@
 {block content}
+<h1>Uživatelský seznam</h1>
 <div class="container">
   <label for="genreSelect">Filtr dle žánru: </label> 
   <select class ="marBot custom-select" name="forma" onchange="location = this.value;">
-    <option {if empty($filter)}selected{/if} value= "{link Book:UserBooks}"></option>
+    <option {if empty($filter)}selected{/if} value= "{link Book:UserBooks}">vypnout filtr</option>
 
    {foreach $genres as $genre}
     <option {if $genre->id == $filter}selected{/if}  value= "{link Book:UserBooks filter=>$genre->id}" > {$genre->name} </option>
@@ -30,18 +31,18 @@
 
 <div class="pagination text-center col-sm-12">
     {if !$paginator->isFirst()}
-        <a n:href="list, 1, orderBy=>$orderPrev,filter=>$filter,order=>$order, orderPrev=>$orderPrev">První</a>
+        <a n:href="list, 1, filter=>$filter">První</a>
         &nbsp;|&nbsp;
-        <a n:href="list, page => $paginator->page-1, orderBy=>$orderPrev,filter=>$filter">Předchozí</a>
+        <a n:href="list, page => $paginator->page-1, filter=>$filter">Předchozí</a>
         &nbsp;|&nbsp;
     {/if}
 
     Stránka {$paginator->page} z {$paginator->pageCount}
     {if !$paginator->isLast()}
         &nbsp;|&nbsp;
-        <a n:href="list, page => $paginator->page+1, orderBy=>$orderPrev,filter=>$filter">Další</a>
+        <a n:href="list, page => $paginator->page+1,filter=>$filter">Další</a>
         &nbsp;|&nbsp;
-        <a n:href="list, page => $paginator->pageCount,orderBy=>$orderPrev,filter=>$filter">Poslední</a>
+        <a n:href="list, page => $paginator->pageCount,filter=>$filter">Poslední</a>
     {/if}
 </div>
   {else}

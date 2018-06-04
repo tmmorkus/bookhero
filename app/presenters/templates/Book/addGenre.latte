@@ -1,0 +1,24 @@
+{block content}
+<h1>Správa žánrů</h1>
+{if !empty($genres)}  
+  <table class="table table-hover">
+  <thead>
+     <tr>
+      <th>Název</th>
+      <th> </th>
+    </tr>
+  </thead>
+   <tbody>
+    {foreach $genres as $genre}
+     <tr>
+      <td>{$genre->name}</a></td>
+      <td>
+          <a n:href="deleteGenre!,genreId => $genre->id" onclick="return confirm('Opravdu chcete žánr odebrat?')">Odebrat</a>
+      </td>
+     </tr>
+    {/foreach}
+    </tbody>  
+    </table>
+ {/if}
+ <h2>Přidat žánr</h2>
+{control genreAddForm}

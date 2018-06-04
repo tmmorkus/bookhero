@@ -1,7 +1,8 @@
 {block navbar}
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <a class="navbar-brand" href="#">BookHero</a>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light marBot">
+  <span class="navbar-brand" >BookHero</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -26,13 +27,16 @@
               </ul>
             </li>
            {/if}
-                
-          
-
-
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
+           <li class="nav-item">
+            <form class="form-inline my-2 my-lg-0" method="GET" id="searchForm">
+                <input class="form-control mr-sm-2" id="findBook" type="search" placeholder="Název knihy" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" id="searchBtn">Search</button>
+            </form>
+          </li>
+           
           {if !$user->isLoggedIn()}
             <li class="nav-item">
                 <a class="nav-link" href="{link User:login}">Přihlásit</a>
@@ -41,6 +45,12 @@
                 <a class="nav-link" href="{link User:register}">Registrovat</a>
             </li>
            {else}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">{$user->getIdentity()->email}<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{link User:changePassword}">Změna hesla</a></li>
+              </ul>
+            </li>
              <li class="nav-item">
                 <a class="nav-link" href="{link User:logout}">Odhlásit</a>
             </li>
