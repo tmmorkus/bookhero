@@ -3,7 +3,7 @@
 namespace App\Model\Entities;
 
 /**
- * Class Article
+ * Class Book
  * @package App\Model\Entities
  * @property int $id
  * @property string $name

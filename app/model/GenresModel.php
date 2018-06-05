@@ -5,10 +5,7 @@ namespace App\Model;
 use App\Model\Entities\Genre;
 use \PDO;
 
-/**
- * Class GenreModel - třída modelu pro práci s články v DB
- * @package App\Model
- */
+
 class GenresModel
 {
     /** @var PDO $pdo */

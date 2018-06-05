@@ -5,10 +5,7 @@ namespace App\Model;
 use App\Model\Entities\Book;
 use \PDO;
 
-/**
- * Class BooksModel - třída modelu pro práci s články v DB
- * @package App\Model
- */
+
 class BooksModel
 {
     /** @var PDO $pdo */
