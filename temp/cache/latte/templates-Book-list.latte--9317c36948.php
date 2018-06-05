@@ -142,7 +142,7 @@ class Template9317c36948 extends Latte\Runtime\Template
          <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:edit", ['id' => $book->id])) ?>">Editovat</a>
        </td>
        <td> 
-        <a onclick="return confirm('Opravdu chcete knihu smazat?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBook!", ['bookId' => $book->id])) ?>">Smazat</a>
+        <a onclick="return confirm('Opravdu chcete knihu smazat?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBook!", ['bookId' => $book->id, 'imgPath' => $book->img])) ?>">Smazat</a>
        </td>
 <?php
 				}

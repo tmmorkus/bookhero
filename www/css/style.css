@@ -1,3 +1,4 @@
+
 body {
 	font-size: 15px;
 	line-height: 1.6;
@@ -52,6 +53,7 @@ form .error {
 
 .marBot {margin-bottom: 30px;}
 .marTop {margin-top: 10px;}
-
+.mouseH {cursor:default;}
 .marToop {margin-top: 25px;}
+.marLeft {margin-left: 6px;}
 

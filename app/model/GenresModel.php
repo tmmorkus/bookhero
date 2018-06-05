@@ -15,7 +15,16 @@ class GenresModel
     private $pdo;
 
     public function findGendres(){
-    $query=$this->pdo->prepare('SELECT * FROM genres ORDER BY `name`;');
+    $query=$this->pdo->prepare('SELECT * FROM genres ORDER BY name;');
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_CLASS,__NAMESPACE__.'\Entities\Genre');
+    }
+
+    public function findGendresToRender($limit,$offset){
+    
+    $query=$this->pdo->prepare('SELECT * FROM genres ORDER BY name LIMIT :limit OFFSET :offset;');
+    $query->bindParam(':offset',$offset,PDO::PARAM_INT);
+    $query->bindParam(':limit',$limit,PDO::PARAM_INT);
     $query->execute();
     return $query->fetchAll(PDO::FETCH_CLASS,__NAMESPACE__.'\Entities\Genre');
     }
@@ -47,9 +56,10 @@ class GenresModel
 
     public function deleteGenre($id)
     {
-        $sql = 'DELETE FROM user_books WHERE genreId = ?';
+        $sql = 'DELETE FROM book_genres WHERE genreId = ?';
         $query = $this->pdo->prepare($sql);
         $query->execute([$id]);
+
 
         $sql   = 'DELETE FROM genres WHERE id = ?';
         $query = $this->pdo->prepare($sql);
@@ -62,6 +72,14 @@ class GenresModel
         $query = $this->pdo->prepare($sql);
         $result = $query->execute([$genre->name]);
         return $result;
+    }
+
+    public function genresCount()
+    {
+        $sql   = 'SELECT COUNT(*) from genres';
+        $query = $this->pdo->prepare($sql);
+        $query->execute();
+        return $query->fetchColumn();
     }
 
 

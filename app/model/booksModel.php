@@ -39,17 +39,19 @@ class BooksModel
     public function findBook($id,$userId)
     {
         $param = [];
-        $param[]=$id;
+     
         if ($userId > 0) {
              
             $sql = 'select books.*, FLOOR(((SUM(user_books.userRating = 1)/
             COUNT(user_books.userRating)) * 100)) as rating, ub.userRating as userRating,
             group_concat(book_genres.genreId) as genres 
-            from books join user_books ub on ub.bookId = books.id  
+            from books 
+            left join user_books ub on ub.bookId = books.id and ub.userId = ? 
             left join  user_books on user_books.bookId = books.id 
             join book_genres on books.id = book_genres.bookId
-            where books.id = ? and ub.userId = ? ';
+            where books.id = ?';
             $param[] = $userId;  
+            $param[]=$id;
         }
         else
         {
@@ -58,7 +60,7 @@ class BooksModel
            left join user_books on user_books.bookId = books.id 
            join book_genres on books.id = book_genres.bookId
            where books.id = ? ';
-           
+           $param[]=$id;
         }
         
 
@@ -83,7 +85,8 @@ class BooksModel
     {
         
         $params = []; 
-        $sql = 'SELECT COUNT(books.id)  FROM books 
+        $sql = 'SELECT COUNT(*) from
+        (select books.id from books 
         join book_genres on book_genres.bookId = books.id ';
 
         
@@ -105,6 +108,8 @@ class BooksModel
           $params[] = $filter;
         }
         
+        $sql .= ' GROUP BY books.Id) sub';
+   
         $query = $this->pdo->prepare($sql); 
        $query->execute($params);
 
@@ -254,10 +259,22 @@ class BooksModel
         $query->execute([$book->id, $genre]);
         }
 
-         $sql   = "UPDATE books SET name = ? , author = ? , year = ? , isbn = ? , pages = ? , description = ? WHERE name = ?";
-             
+        $param = [$book->name,$book->author,$book->year,$book->isbn,$book->pages,$book->description];
+
+         $sql   = "UPDATE books SET name = ? , author = ? , year = ? , isbn = ? , pages = ? , description = ? ";
+
+         if (!empty($book->img))
+         {
+            $sql .= ",img = ? ";
+            $param[] = $book->img; 
+
+         }
+
+         $sql .= "WHERE id = ?";
+         $param[] = $book->id;
+
         $query = $this->pdo->prepare($sql);
-        $result = $query->execute([$book->name,$book->author,$book->year,$book->isbn,$book->pages,$book->description, $book->name]);
+        $result = $query->execute($param);
    
         return $result;
     }

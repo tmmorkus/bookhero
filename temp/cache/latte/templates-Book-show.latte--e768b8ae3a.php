@@ -48,29 +48,32 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 <?php
 		if ($user->isInRole('admin') == 1) {
 ?>
-          <td> 
+           <tr>
+           <td> 
             <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:edit", ['id' => $book->id])) ?>">Editovat</a>
            </td>
+           <td> </td>
+           </tr>
 <?php
 		}
 ?>
 
 			<tr>
 				<td class="font-weight-bold">Autor: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($book->author) /* line 19 */ ?></td>
-			<tr>
+				<td><?php echo LR\Filters::escapeHtmlText($book->author) /* line 22 */ ?></td>
+			</tr>
 			<tr>
 				<td class="font-weight-bold">Stran: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($book->pages) /* line 23 */ ?></td>
-			<tr>
+				<td><?php echo LR\Filters::escapeHtmlText($book->pages) /* line 26 */ ?></td>
+			</tr>
 			<tr>
 				<td class="font-weight-bold">Žánr: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($genres) /* line 27 */ ?></td>
-			<tr>
+				<td><?php echo LR\Filters::escapeHtmlText($genres) /* line 30 */ ?></td>
+			</tr>
 			<tr>
 				<td class="font-weight-bold">ISBN: </td>
-				<td><?php echo LR\Filters::escapeHtmlText($book->isbn) /* line 31 */ ?></td>
-			<tr>
+				<td><?php echo LR\Filters::escapeHtmlText($book->isbn) /* line 34 */ ?></td>
+			</tr>
 <?php
 		if ($book->rating >= 0) {
 ?>
@@ -81,10 +84,10 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 				?>0%<?php
 			}
 			else {
-				echo LR\Filters::escapeHtmlText($book->rating) /* line 36 */ ?>%<?php
+				echo LR\Filters::escapeHtmlText($book->rating) /* line 39 */ ?>%<?php
 			}
 ?></td>
-			<tr>	
+			</tr>	
 <?php
 		}
 		if ($user->isLoggedIn() && !empty($userBook)) {
@@ -120,7 +123,7 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 				?> blue <?php
 			}
 ?> ; font-size: 24px;"></i></a>
-  				<a  href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("rate!", ['rating' => $rat2])) ?>"><i class="far fa-thumbs-down" style="color:<?php
+  				<a  href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("rate!", ['rating' => $rat2])) ?>"><i class="far fa-thumbs-down marLeft" style="color:<?php
 			if ($book->userRating == 2) {
 				?> red <?php
 			}
@@ -128,12 +131,14 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 				?> blue <?php
 			}
 ?>; font-size: 24px;"></i></a></td>
-  			<tr>
+  			    <td> </td>
+  			</tr>
 			<tr>	  
 			    <td>	
                	  <a onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBookFromUser!", ['bookId' => $book->id])) ?>">Odebrat ze seznamu</a>	
- 				</td>	
- 			<tr>
+ 				</td>
+ 				<td></td>	
+ 			</tr>
 <?php
 		}
 		elseif ($user->isLoggedIn()) {
@@ -143,13 +148,13 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
  			   <td>	
 				<a  href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("addBookToUser!", ['bookId' => $book->id])) ?>">Přidat do seznamu</a>
 			   	</td>
-			<tr>  
+			</tr>  
 <?php
 		}
 ?>
 		</table>
 	  </div>
-     <div class = "col-12"> <?php echo LR\Filters::escapeHtmlText($book->description) /* line 61 */ ?> </div>
+     <div class = "col-12"> <?php echo LR\Filters::escapeHtmlText($book->description) /* line 66 */ ?> </div>
 		
 	</div>
 </div>

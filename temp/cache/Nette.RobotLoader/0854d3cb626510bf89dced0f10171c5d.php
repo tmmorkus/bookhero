@@ -52,11 +52,6 @@ return array (
       'file' => 'C:\\xampp\\htdocs\\bookhero\\app\\presenters\\ErrorPresenter.php',
       'time' => 1522699088,
     ),
-    'App\\Presenters\\UserPresenter' => 
-    array (
-      'file' => 'C:\\xampp\\htdocs\\bookhero\\app\\presenters\\UserPresenter.php',
-      'time' => 1528115767,
-    ),
     'App\\RouterFactory' => 
     array (
       'file' => 'C:\\xampp\\htdocs\\bookhero\\app\\router\\RouterFactory.php',
@@ -65,17 +60,22 @@ return array (
     'App\\Model\\GenresModel' => 
     array (
       'file' => 'C:\\xampp\\htdocs\\bookhero\\app\\model\\GenresModel.php',
-      'time' => 1528142332,
-    ),
-    'App\\Presenters\\BookPresenter' => 
-    array (
-      'file' => 'C:\\xampp\\htdocs\\bookhero\\app\\presenters\\BookPresenter.php',
-      'time' => 1528142898,
+      'time' => 1528198704,
     ),
     'App\\Model\\BooksModel' => 
     array (
       'file' => 'C:\\xampp\\htdocs\\bookhero\\app\\model\\booksModel.php',
-      'time' => 1528143014,
+      'time' => 1528200814,
+    ),
+    'App\\Presenters\\BookPresenter' => 
+    array (
+      'file' => 'C:\\xampp\\htdocs\\bookhero\\app\\presenters\\BookPresenter.php',
+      'time' => 1528204809,
+    ),
+    'App\\Presenters\\UserPresenter' => 
+    array (
+      'file' => 'C:\\xampp\\htdocs\\bookhero\\app\\presenters\\UserPresenter.php',
+      'time' => 1528204770,
     ),
   ),
   1 => 

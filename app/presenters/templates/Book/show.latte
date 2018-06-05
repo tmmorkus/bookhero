@@ -9,52 +9,57 @@
 		<div class = "col-lg-10 col-md-9 col-sm-8">
 		<table>
 		  {if $user->isInRole('admin') == 1}
-          <td> 
+           <tr>
+           <td> 
             <a n:href="Book:edit,id => $book->id">Editovat</a>
            </td>
+           <td> </td>
+           </tr>
            {/if}
 
 			<tr>
 				<td class="font-weight-bold">Autor: </td>
 				<td>{$book->author}</td>
-			<tr>
+			</tr>
 			<tr>
 				<td class="font-weight-bold">Stran: </td>
 				<td>{$book->pages}</td>
-			<tr>
+			</tr>
 			<tr>
 				<td class="font-weight-bold">Žánr: </td>
 				<td>{$genres}</td>
-			<tr>
+			</tr>
 			<tr>
 				<td class="font-weight-bold">ISBN: </td>
 				<td>{$book->isbn}</td>
-			<tr>
+			</tr>
 			{if $book->rating >= 0 } 	
 			<tr>
 				<td class="font-weight-bold">Hodnocení: </td>
 				<td>{if empty($book->rating)}0%{else}{$book->rating}%{/if}</td>
-			<tr>	
+			</tr>	
 			{/if}
 			{if $user->isLoggedIn() && !empty($userBook)}
 			<tr> 
                {if "1" == $actualRating}{var $rat1 = "0"} {else} {var $rat1 = "1"}{/if}
                {if "2" == $actualRating}{var $rat2 = "0"} {else} {var $rat2 = "2"}{/if}
   				<td><a n:href="rate!, rating => $rat1"><i class="far fa-thumbs-up" style="color:{if $book->userRating == 1} green {else} blue {/if} ; font-size: 24px;"></i></a>
-  				<a n:href="rate!,rating => $rat2" ><i class="far fa-thumbs-down" style="color:{if $book->userRating == 2} red {else} blue {/if}; font-size: 24px;"></i></a></td>
-  			<tr>
+  				<a n:href="rate!,rating => $rat2" ><i class="far fa-thumbs-down marLeft" style="color:{if $book->userRating == 2} red {else} blue {/if}; font-size: 24px;"></i></a></td>
+  			    <td> </td>
+  			</tr>
 			<tr>	  
 			    <td>	
                	  <a n:href="deleteBookFromUser!,bookId => $book->id" onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')">Odebrat ze seznamu</a>	
- 				</td>	
- 			<tr>
+ 				</td>
+ 				<td></td>	
+ 			</tr>
  			{elseif $user->isLoggedIn()}
  			<tr>
 
  			   <td>	
 				<a n:href="addBookToUser!,bookId => $book->id" >Přidat do seznamu</a>
 			   	</td>
-			<tr>  
+			</tr>  
 			{/if}
 		</table>
 	  </div>

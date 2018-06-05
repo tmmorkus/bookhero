@@ -146,7 +146,11 @@ class UserPresenter extends BasePresenter
       {
         $usersCount = $this->usersModel->findUsersCount();
 
-        if ($orderBy != $orderPrev) {
+        if ($page == 2 && $order == "asc") {
+            $order = "desc";
+        }
+        elseif ($page == 2  && $order == "desc")
+        {
             $order = "asc";
         }
 
@@ -156,12 +160,15 @@ class UserPresenter extends BasePresenter
         $paginator->setPage($page);
 
         $this->template->users = $this->usersModel->findUsers($orderBy, $order, $paginator->getLength(), $paginator->getOffset());
-
-        if ($order == "asc") {
-            $order = "desc";
-        } else {
+        if ($page == 1)
+        {
+          if ($order == "desc") {
             $order = "asc";
+          } else {
+            $order = "desc";
+           } 
         }
+
 
         $this->template->paginator = $paginator;
         $this->template->orderPrev = $orderBy;

@@ -38,7 +38,7 @@ class Template4252c3b03c extends Latte\Runtime\Template
 
 
 <nav class="navbar navbar-expand-md navbar-light bg-light marBot">
-  <span class="navbar-brand" >BookHero</span>
+  <span class="navbar-brand mouseH">BookHero</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -62,7 +62,7 @@ class Template4252c3b03c extends Latte\Runtime\Template
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("User:list")) ?>">Seznam uživatelů</a></li>
                 <li><a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:add")) ?>">Přidání knih</a> </li>
-                <li><a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:addGenre")) ?>">Přidat žánr</a> </li>
+                <li><a class="nav-link" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("Book:addGenre")) ?>">Správa žánrů</a> </li>
               </ul>
             </li>
 <?php
@@ -74,7 +74,7 @@ class Template4252c3b03c extends Latte\Runtime\Template
            <li class="nav-item">
             <form class="form-inline my-2 my-lg-0" method="GET" id="searchForm">
                 <input class="form-control mr-sm-2" id="findBook" type="search" placeholder="Název knihy" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" id="searchBtn">Search</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" id="searchBtn">Hledej  </button>
             </form>
           </li>
            

@@ -2,7 +2,7 @@
 <h1>Uživatelský seznam</h1>
 <div class="container">
   <label for="genreSelect">Filtr dle žánru: </label> 
-  <select class ="marBot custom-select" name="forma" onchange="location = this.value;">
+  <select id = "genreSelect" class ="marBot custom-select" name="forma" onchange="location = this.value;">
     <option {if empty($filter)}selected{/if} value= "{link Book:UserBooks}">vypnout filtr</option>
 
    {foreach $genres as $genre}
@@ -16,11 +16,11 @@
  <div class = "col-md-3 col-sm-4 col-xs-6  text-center">
    <table class="marBot">
    	<tbody>
-   	 <tr><td><a href="{link Book:show id=>$book->id}"> {$book->name} </a></tr></td>
-   	 <tr><td><img src="{$basePath.'/'.$book->img}" alt="{$book->name} přebal" height="160" width="100"></tr></td>
-   	 <tr ><td> 
+   	 <tr><td><a href="{link Book:show id=>$book->id}"> {$book->name} </a></td></tr>
+   	 <tr><td><img src="{$basePath.'/'.$book->img}" alt="{$book->name} přebal" height="160" width="100"></td></tr>
+   	 <tr><td> 
           <a n:href="deleteBookFromUser!,bookId => $book->id" >Odebrat ze seznamu</a>
-     </tr></td>
+     </td></tr>
      </tbody>
    </table>
  </div>
@@ -31,18 +31,18 @@
 
 <div class="pagination text-center col-sm-12">
     {if !$paginator->isFirst()}
-        <a n:href="list, 1, filter=>$filter">První</a>
+        <a n:href="userBooks, 1, filter=>$filter">První</a>
         &nbsp;|&nbsp;
-        <a n:href="list, page => $paginator->page-1, filter=>$filter">Předchozí</a>
+        <a n:href="userBooks, page => $paginator->page-1, filter=>$filter">Předchozí</a>
         &nbsp;|&nbsp;
     {/if}
 
     Stránka {$paginator->page} z {$paginator->pageCount}
     {if !$paginator->isLast()}
         &nbsp;|&nbsp;
-        <a n:href="list, page => $paginator->page+1,filter=>$filter">Další</a>
+        <a n:href="userBooks, page => $paginator->page+1,filter=>$filter">Další</a>
         &nbsp;|&nbsp;
-        <a n:href="list, page => $paginator->pageCount,filter=>$filter">Poslední</a>
+        <a n:href="userBooks, page => $paginator->pageCount,filter=>$filter">Poslední</a>
     {/if}
 </div>
   {else}

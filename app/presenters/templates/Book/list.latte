@@ -59,7 +59,7 @@
          <a n:href="Book:edit,id => $book->id">Editovat</a>
        </td>
        <td> 
-        <a n:href="deleteBook!,bookId => $book->id" onclick="return confirm('Opravdu chcete knihu smazat?')">Smazat</a>
+        <a n:href="deleteBook!,bookId => $book->id, imgPath => $book->img" onclick="return confirm('Opravdu chcete knihu smazat?')">Smazat</a>
        </td>
      {/if}
        </tr>

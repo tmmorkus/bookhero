@@ -64,12 +64,42 @@ class Templateb966b58105 extends Latte\Runtime\Template
 ?>
     </tbody>  
     </table>
+    <div class="pagination text-center col-sm-12">
+<?php
+			if (!$paginator->isFirst()) {
+				?>        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("addGenre", [1])) ?>">První</a>
+        &nbsp;|&nbsp;
+        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("addGenre", ['page' => $paginator->page-1])) ?>">Předchozí</a>
+        &nbsp;|&nbsp;
+<?php
+			}
+?>
+
+    Stránka <?php echo LR\Filters::escapeHtmlText($paginator->page) /* line 30 */ ?> z <?php echo LR\Filters::escapeHtmlText($paginator->pageCount) /* line 30 */ ?>
+
+<?php
+			if (!$paginator->isLast()) {
+?>
+        &nbsp;|&nbsp;
+        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("addGenre", ['page' => $paginator->page+1])) ?>">Další</a>
+        &nbsp;|&nbsp;
+        <a href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("addGenre", ['page' => $paginator->pageCount])) ?>">Poslední</a>
+<?php
+			}
+?>
+</div>
+<?php
+		}
+		else {
+?>
+
 <?php
 		}
 ?>
+
  <h2>Přidat žánr</h2>
 <?php
-		/* line 24 */ $_tmp = $this->global->uiControl->getComponent("genreAddForm");
+		/* line 43 */ $_tmp = $this->global->uiControl->getComponent("genreAddForm");
 		if ($_tmp instanceof Nette\Application\UI\IRenderable) $_tmp->redrawControl(null, false);
 		$_tmp->render();
 		

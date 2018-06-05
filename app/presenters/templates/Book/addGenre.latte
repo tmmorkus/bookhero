@@ -19,6 +19,25 @@
     {/foreach}
     </tbody>  
     </table>
+    <div class="pagination text-center col-sm-12">
+    {if !$paginator->isFirst()}
+        <a n:href="addGenre, 1">První</a>
+        &nbsp;|&nbsp;
+        <a n:href="addGenre, page => $paginator->page-1">Předchozí</a>
+        &nbsp;|&nbsp;
+    {/if}
+
+    Stránka {$paginator->page} z {$paginator->pageCount}
+    {if !$paginator->isLast()}
+        &nbsp;|&nbsp;
+        <a n:href="addGenre, page => $paginator->page+1">Další</a>
+        &nbsp;|&nbsp;
+        <a n:href="addGenre, page => $paginator->pageCount">Poslední</a>
+    {/if}
+</div>
+ {else}
+
  {/if}
+
  <h2>Přidat žánr</h2>
 {control genreAddForm}

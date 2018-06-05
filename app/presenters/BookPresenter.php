@@ -14,6 +14,7 @@ use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
 use Nette\Utils\Image;
 use Nette\Utils\Paginator;
+use Nette\Utils\FileSystem;
 
 /**
  * Base presenter for all application presenters.
@@ -35,11 +36,13 @@ class BookPresenter extends Nette\Application\UI\Presenter
 
     }
 
-    public function handleDeleteBook($bookId)
+    public function handleDeleteBook($bookId, $imgPath)
     {
+
         if ($this->user->isInRole('admin') == 1) {
             $result = $this->booksModel->deleteBook($bookId);
             if ($result) {
+                FileSystem::delete($imgPath);
                 $this->flashMessage('Kniha smazána');
             }
         }
@@ -62,9 +65,7 @@ class BookPresenter extends Nette\Application\UI\Presenter
             $result = $this->booksModel->addBookToUser($bookId, $this->user->id);
             if ($result) {
                 $this->flashMessage('Kniha přidána do Vašeho seznamu');
-            } else {
-                $this->flashMessage('Kniha se již ve Vašem seznamu nachází');
-            }
+            } 
         }
     }
 
@@ -116,6 +117,14 @@ class BookPresenter extends Nette\Application\UI\Presenter
                 ->addRule(BootstrapForm::IMAGE, 'Obrázek musí být ve formátu musí být JPEG, PNG nebo GIF.')
                 ->addRule(BootstrapForm::MAX_FILE_SIZE, 'Max file size is 514kb.', 514 * 1024);
         }
+        elseif (strpos($_SERVER['REQUEST_URI'], '/edit/') > 0)
+        {
+                $form->addUpload('image', 'Obrázek(160x100):')
+                ->setRequired(false)
+                ->addRule(BootstrapForm::IMAGE, 'Obrázek musí být ve formátu musí být JPEG, PNG nebo GIF.')
+                ->addRule(BootstrapForm::MAX_FILE_SIZE, 'Max file size is 514kb.', 514 * 1024);
+        }
+
         $form->addText('year', 'Rok vydání:')
             ->setRequired('Je nutné zadat rok vydání knihy')
             ->addRule(BootstrapForm::INTEGER, 'Rok musí být číslo')
@@ -163,10 +172,20 @@ class BookPresenter extends Nette\Application\UI\Presenter
         }
     }
 
-    public function renderaddGenre()
+    public function renderAddGenre($page = 1)
     {
+
+        $genresCount = $this->genresModel->genresCount();
+
+        $paginator = new Paginator();
+        $paginator->setItemCount($genresCount);
+        $paginator->setItemsPerPage(5);
+        $paginator->setPage($page);
+
+
         if ($this->user->isInRole('admin') == 1) {
-            $this->template->genres = $this->genresModel->findGendres();
+            $this->template->genres = $this->genresModel->findGendresToRender($paginator->getLength(), $paginator->getOffset());
+               $this->template->paginator = $paginator; 
         } else {
             $this->redirect('Book:list');
         }
@@ -189,6 +208,7 @@ class BookPresenter extends Nette\Application\UI\Presenter
     {
         $booksCount = $this->booksModel->findBooksCount($filter, null);
 
+      
         $paginator = new Paginator();
         $paginator->setItemCount($booksCount);
         $paginator->setItemsPerPage($itemsNumb);
@@ -209,20 +229,29 @@ class BookPresenter extends Nette\Application\UI\Presenter
     public function renderList($orderBy, $order, $orderPrev, $filter, $page = 1)
     {
 
-        if ($orderBy != $orderPrev) {
+
+
+        if ($page == 2 && $order == "asc") {
+            $order = "desc";
+        }
+        elseif ($page == 2  && $order == "desc")
+        {
             $order = "asc";
         }
+    
 
-        $books = $this->getBooks($orderBy, $order, $filter, 10, $page, null);
+        $books = $this->getBooks($orderBy, $order, $filter, 6, $page, null);
 
         $this->template->books = $books[1];
 
-        if ($order == "asc") {
+        if ($page == 1)
+        {
+          if ($order == "desc") {
+              $order = "asc";
+          } else {
             $order = "desc";
-        } else {
-            $order = "asc";
+          }
         }
-
         $this->template->paginator = $books[0];
         $this->template->orderPrev = $orderBy;
         $this->template->order     = $order;
@@ -236,9 +265,11 @@ class BookPresenter extends Nette\Application\UI\Presenter
     {
 
         $book = new Book();
+         
+ 
 
-        if (strpos($_SERVER['REQUEST_URI'], '/edit/') === false) {
-
+        if ($values->image->isOK()) {
+            
             $image = $values->image->toImage();
 
             $image->resize(100, 160, Image::STRETCH);
@@ -261,7 +292,12 @@ class BookPresenter extends Nette\Application\UI\Presenter
 
         if (strpos($_SERVER['REQUEST_URI'], '/edit/') != false
             && !empty($this->booksModel->findByName($book->name)->id)) {
-            $book->id = $this->booksModel->findByName($book->name)->id;
+            $oldBook = $this->booksModel->findByName($book->name);
+            $book->id = $oldBook->id;
+            if (!empty($book->img))
+            {
+                FileSystem::delete($oldBook->img);
+            }
             $result = $this->booksModel->editBook($book);
             if ($result) {
                 $this->flashMessage('Kniha byla pozměněna');
@@ -319,6 +355,8 @@ class BookPresenter extends Nette\Application\UI\Presenter
             }
             $book =  $this->booksModel->findBook($id, $userId);
             $booksGenres = "";
+
+        
             foreach ($book->genres as $genre) {
               $booksGenres .= $this->genresModel->findGenre([$genre, "id"])->name . ", ";
             }
