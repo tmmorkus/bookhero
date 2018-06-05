@@ -54,6 +54,7 @@ class LoginDialog extends Facebook\Dialog\AbstractDialog
 	 */
 	public function handleOpen($authType = NULL)
 	{
+;
 		$this->authType = $authType;
 		if (!$this->facebook->getUser() || $this->authType) { // no user
 			$this->open();

@@ -133,30 +133,23 @@ class Templatee768b8ae3a extends Latte\Runtime\Template
 ?>; font-size: 24px;"></i></a></td>
   			    <td> </td>
   			</tr>
-			<tr>	  
-			    <td>	
-               	  <a onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBookFromUser!", ['bookId' => $book->id])) ?>">Odebrat ze seznamu</a>	
- 				</td>
- 				<td></td>	
- 			</tr>
-<?php
-		}
-		elseif ($user->isLoggedIn()) {
-?>
- 			<tr>
-
- 			   <td>	
-				<a  href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("addBookToUser!", ['bookId' => $book->id])) ?>">Přidat do seznamu</a>
-			   	</td>
-			</tr>  
 <?php
 		}
 ?>
 		</table>
 	  </div>
-     <div class = "col-12"> <?php echo LR\Filters::escapeHtmlText($book->description) /* line 66 */ ?> </div>
-		
+     <div class = "col-12"> <?php echo LR\Filters::escapeHtmlText($book->description) /* line 53 */ ?> </div>
 	</div>
+<?php
+		if ($user->isLoggedIn() && !empty($userBook)) {
+			?>       <a onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')" href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("deleteBookFromUser!", ['bookId' => $book->id])) ?>">Odebrat ze seznamu</a>	
+<?php
+		}
+		elseif ($user->isLoggedIn()) {
+			?> 	   <a  href="<?php echo LR\Filters::escapeHtmlAttr($this->global->uiControl->link("addBookToUser!", ['bookId' => $book->id])) ?>">Přidat do seznamu</a>
+<?php
+		}
+?>
 </div>
 
 

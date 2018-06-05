@@ -47,25 +47,16 @@
   				<a n:href="rate!,rating => $rat2" ><i class="far fa-thumbs-down marLeft" style="color:{if $book->userRating == 2} red {else} blue {/if}; font-size: 24px;"></i></a></td>
   			    <td> </td>
   			</tr>
-			<tr>	  
-			    <td>	
-               	  <a n:href="deleteBookFromUser!,bookId => $book->id" onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')">Odebrat ze seznamu</a>	
- 				</td>
- 				<td></td>	
- 			</tr>
- 			{elseif $user->isLoggedIn()}
- 			<tr>
-
- 			   <td>	
-				<a n:href="addBookToUser!,bookId => $book->id" >Přidat do seznamu</a>
-			   	</td>
-			</tr>  
 			{/if}
 		</table>
 	  </div>
      <div class = "col-12"> {$book->description} </div>
-		
 	</div>
+		  {if $user->isLoggedIn() && !empty($userBook)}		
+       <a n:href="deleteBookFromUser!,bookId => $book->id" onclick="return confirm('Opravdu chcete knihu odebraz ze seznamu?')">Odebrat ze seznamu</a>	
+ 	  {elseif $user->isLoggedIn() }
+ 	   <a n:href="addBookToUser!,bookId => $book->id" >Přidat do seznamu</a>
+	  {/if}
 </div>
 
 

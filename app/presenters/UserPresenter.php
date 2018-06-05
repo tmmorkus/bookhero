@@ -203,10 +203,13 @@ class UserPresenter extends BasePresenter
 
     public function createComponentFbLogin()
     {
-
+       
         $dialog               = $this->facebook->createDialog('login');
+
         $dialog->onResponse[] = function (\Kdyby\Facebook\Dialog\LoginDialog $dialog) {
+                
             $fb = $dialog->getFacebook();
+             
             if (!$fb->getUser()) {
                 $this->flashMessage("Přihlášení pomocí faccebooku selhalo");
                 return;

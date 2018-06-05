@@ -105,7 +105,8 @@ abstract class AbstractDialog extends PresenterComponent implements Facebook\Dia
 	public function handleResponse()
 	{
 		$this->onResponse($this);
-
+		echo $this->config->canvasBaseUrl;
+		die();
 		if (!empty($this->config->canvasBaseUrl)) {
 			$this->presenter->redirectUrl($this->config->canvasBaseUrl);
 		}
@@ -159,7 +160,9 @@ abstract class AbstractDialog extends PresenterComponent implements Facebook\Dia
 	 */
 	public function open()
 	{
-		$this->presenter->redirectUrl($this->getUrl());
+		
+	
+		$this->presenter->redirectUrl(str_replace("response","open",$this->getUrl()));
 	}
 
 

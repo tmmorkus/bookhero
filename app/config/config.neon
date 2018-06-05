@@ -26,8 +26,8 @@ extensions:
 
 
 facebook:
-	appId: "185766635309072	"
-	appSecret: "6280ea8c791324f7ac474b5a5aaf0366"
+	appId: "664082147256882"
+	appSecret: "7b1594aeaf0ec1f79ed63b4e9a6062d7"
 	permissions: [public_profile, email] # theese are the default read permissions, you might need to
 	graphVersion: v2.3
 

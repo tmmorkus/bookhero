@@ -418,7 +418,7 @@ class Container_a6c8c8ad99 extends Nette\DI\Container
 
 	public function createServiceFacebook__config(): Kdyby\Facebook\Configuration
 	{
-		$service = new Kdyby\Facebook\Configuration('185766635309072	', '6280ea8c791324f7ac474b5a5aaf0366');
+		$service = new Kdyby\Facebook\Configuration('664082147256882', '7b1594aeaf0ec1f79ed63b4e9a6062d7');
 		$service->verifyApiCalls = true;
 		$service->fileUploadSupport = false;
 		$service->trustForwarded = false;

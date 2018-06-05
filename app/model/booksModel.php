@@ -109,7 +109,7 @@ class BooksModel
         }
         
         $sql .= ' GROUP BY books.Id) sub';
-   
+
         $query = $this->pdo->prepare($sql); 
        $query->execute($params);
 

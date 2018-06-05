@@ -206,7 +206,7 @@ class BookPresenter extends Nette\Application\UI\Presenter
 
     private function getBooks($orderBy, $order, $filter, $itemsNumb, $page, $user)
     {
-        $booksCount = $this->booksModel->findBooksCount($filter, null);
+        $booksCount = $this->booksModel->findBooksCount($filter, $user);
 
       
         $paginator = new Paginator();
