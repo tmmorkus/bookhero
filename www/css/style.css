@@ -10,6 +10,9 @@ h1 {
 	color: #3484D2;
 }
 
+a:hover {
+	text-decoration: none;
+  }
 
 #ajax-spinner {
 	margin: 15px 0 0 15px;

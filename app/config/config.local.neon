@@ -1,5 +1,4 @@
 parameters:
-    pdo:
-        connectionString: 'mysql:host=127.0.0.1;dbname=app;charset=utf8'
-        username: root
-        password:
+	dsn: 'mysql:host=sql109.epizy.com;dbname=epiz_25959449_bookhero'
+	user: "sql109.epizy.com"
+	password: "eA2eFAm5DX6"

@@ -15,11 +15,9 @@ session:
 	expiration: 14 days
 
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=app'
-	user:
-	password:
-	options:
-		lazy: yes
+	dsn: 'mysql:host=sql109.epizy.com;dbname=epiz.25959449_bookhero'
+	user: "epiz_25959449"
+	password: "eA2eFAm5DX6"
 
 extensions:
 	facebook: Kdyby\Facebook\DI\FacebookExtension
@@ -32,12 +30,12 @@ facebook:
 	graphVersion: v2.3
 
 services:
+	pdo: PDO('mysql:host=sql109.epizy.com;dbname=epiz_25959449_bookhero','epiz_25959449','eA2eFAm5DX6')
 	- App\Model\BooksModel 
 	- App\Model\GenresModel
 	- App\Model\UsersModel
 	- App\Forms\FormFactory
 	router: App\RouterFactory::createRouter
-	pdo: \PDO(%pdo.connectionString%,%pdo.username%,%pdo.password%)
 
 
 

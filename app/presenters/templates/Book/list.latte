@@ -38,7 +38,7 @@
       <td>{$book->author}</td>
       <td>{$book->year}</td>
       <td>{$book->isbn}</td>
-      <td>{if empty($book->rating)}0%{else}{$book->rating}%{/if}</td>
+      <td>{if empty($book->rating)}-{else}{$book->rating}%{/if}</td>
      {if $user->isLoggedIn()}
       <td>
       {var $change = false} 
